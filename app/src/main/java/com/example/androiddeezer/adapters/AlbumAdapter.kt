@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.example.androiddeezer.R
 import com.example.androiddeezer.models.Album
 import com.example.androiddeezer.models.Artist
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_album.view.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -44,7 +45,7 @@ class AlbumAdapter(val context: Context): Adapter<ViewHolder>() {
         holder.itemView.album_title.text = album.title
         holder.itemView.album_artist.text = album.artist?.name
         holder.itemView.album_release_date.text = album.release_date
-
+        Picasso.get().load(album.cover_medium).into(holder.itemView.album_image)
     }
 }
 
