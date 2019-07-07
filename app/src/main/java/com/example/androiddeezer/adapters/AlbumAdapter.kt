@@ -37,10 +37,10 @@ class AlbumAdapter(val context: Context): Adapter<ViewHolder>() {
         return albumList.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val album = albumList[position]
 
-        holder?.itemView?.album_title?.text = album.title
+        holder.itemView.album_title.text = album.title
     }
 }
 
