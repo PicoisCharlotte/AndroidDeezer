@@ -96,6 +96,7 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
         val transaction = fragmentManager.beginTransaction()
         transaction.replace(R.id.content, fragment)
         transaction.remove(this)
+        transaction.addToBackStack(null)
         transaction.commit()
     }
 
