@@ -92,8 +92,12 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
     override fun onClickItem(album: Album) {
         val fragment = ListTracksFragment.newInstance()
         val transaction = childFragmentManager.beginTransaction()
+        //transaction.replace(R.id.album_content, fragment)
         transaction.replace(R.id.album_fragment, fragment)
-        transaction.remove(this)
+
+
+        transaction.addToBackStack(null)
+
         transaction.commit()
     }
 
