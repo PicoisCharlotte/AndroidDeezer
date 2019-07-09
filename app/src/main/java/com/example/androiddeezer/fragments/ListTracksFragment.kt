@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +36,7 @@ class ListTracksFragment :Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        list_track_view.layoutManager = GridLayoutManager(context, 1)
+        list_track_view.layoutManager = GridLayoutManager(context, 1) as RecyclerView.LayoutManager?
         list_track_view.adapter = trackAdapter
 
 
@@ -72,10 +73,10 @@ class ListTracksFragment :Fragment() {
                         println("track ${trackList[i]}")
                     }
 
-                    activity.runOnUiThread {
+                    activity.runOnUiThread(java.lang.Runnable {
                         trackAdapter.setData(trackList)
                         trackAdapter.notifyDataSetChanged()
-                    }
+                    })
 
                 } catch (e: JSONException) {
                     e.printStackTrace()
