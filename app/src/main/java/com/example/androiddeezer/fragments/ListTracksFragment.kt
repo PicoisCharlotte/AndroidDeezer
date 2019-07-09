@@ -1,68 +1,53 @@
 package com.example.androiddeezer.fragments
 
+import android.app.Fragment
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.example.androiddeezer.R
 import com.example.androiddeezer.adapters.AlbumAdapter
 import com.example.androiddeezer.adapters.TrackAdapter
-import com.example.androiddeezer.models.Album
-import interfaces.AdapterCallbackAlbum
-import kotlinx.android.synthetic.main.fragment_list_albums.*
+import com.example.androiddeezer.models.Tracks
+import kotlinx.android.synthetic.main.fragment_list_tracks.*
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 
-
-class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
-    override fun onClickItem(album: Album) {
-        val fragment = ListTracksFragment.newInstance()
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.replace(R.id.album_fragment, fragment)
-        transaction.commit()
-    }
-
-    override fun goToTracks(idAlbum: Int?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
+class ListTracksFragment :Fragment() {
     private val client = OkHttpClient()
-    var albumList: MutableList<Album> = mutableListOf()
-    val url = "http://api.deezer.com/2.0/user/2529/albums"
-    lateinit var albumAdapter: AlbumAdapter
+    var trackList: MutableList<Tracks> = mutableListOf()
+    //Adapt with correct id
+    var url = "http://api.deezer.com/2.0/album/49201/tracks"
+    lateinit var trackAdapter: TrackAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        albumAdapter = AlbumAdapter(context)
+        trackAdapter = TrackAdapter(context)
         linearLayoutManager = LinearLayoutManager(context)
-
-        return inflater.inflate(R.layout.fragment_list_albums, container, false)
+        return inflater.inflate(R.layout.fragment_list_tracks, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        list_album_view.layoutManager = GridLayoutManager(context, 1)
-        list_album_view.adapter = albumAdapter
+        list_track_view.layoutManager = GridLayoutManager(context, 1)
+        list_track_view.adapter = trackAdapter
 
-        getAlbums(url)
 
+        getTracks(url)
     }
 
     companion object {
-        fun newInstance(): ListAlbumsFragment {
-            return ListAlbumsFragment()
+        fun newInstance(): ListTracksFragment {
+            return ListTracksFragment()
         }
     }
-
-    fun getAlbums(url: String) {
+    fun getTracks(url: String) {
         val request = Request.Builder()
             .url(url)
             .build()
@@ -78,18 +63,18 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
 
                     val datas = json.getJSONArray("data")
                     for(i in 0..(datas.length() - 1)) {
-                        val album = datas.getJSONObject(i)
+                        val track = datas.getJSONObject(i)
 
-                        albumList.add(Album(album))
+                        trackList.add(Tracks(track))
                     }
 
-                    for (i in 0..(albumList.size - 1)) {
-                        println("album ${albumList[i]}")
+                    for (i in 0..(trackList.size - 1)) {
+                        println("track ${trackList[i]}")
                     }
 
                     activity.runOnUiThread {
-                        albumAdapter.setData(albumList)
-                        albumAdapter.notifyDataSetChanged()
+                        trackAdapter.setData(trackList)
+                        trackAdapter.notifyDataSetChanged()
                     }
 
                 } catch (e: JSONException) {
@@ -99,4 +84,5 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
             }
         })
     }
+
 }

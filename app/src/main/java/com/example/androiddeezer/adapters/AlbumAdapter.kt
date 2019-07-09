@@ -7,21 +7,29 @@ import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
 import com.example.androiddeezer.R
 import com.example.androiddeezer.models.Album
 import com.example.androiddeezer.models.Artist
 import com.squareup.picasso.Picasso
+import interfaces.AdapterCallbackAlbum
 import kotlinx.android.synthetic.main.item_album.view.*
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 
-class AlbumAdapter(val context: Context): Adapter<ViewHolder>() {
+class AlbumAdapter(val context: Context, private val adapterCallbackAlbum: AdapterCallbackAlbum): Adapter<ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     private var albumList: MutableList<Album> = ArrayList()
     private var artist: Artist? = null
+
+    private lateinit var mListener: ItemClickCallback
+    internal lateinit var inflater: LayoutInflater
+
+    private var onClickListenerTracks: View.OnClickListener? = null
+
+    interface ItemClickCallback { fun onItemClick(position: Int) }
+
+    fun setOnItemClickListener(itemClickCallback: ItemClickCallback) {
+        mListener = itemClickCallback
+    }
 
     fun setData(data: MutableList<Album>) {
         albumList = data
@@ -32,8 +40,10 @@ class AlbumAdapter(val context: Context): Adapter<ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val rowView: View
         rowView = LayoutInflater.from(context).inflate(R.layout.item_album, parent, false)
-        return ViewHolder(rowView)
 
+
+
+        return ViewHolder(rowView)
     }
 
 
@@ -55,6 +65,11 @@ class AlbumAdapter(val context: Context): Adapter<ViewHolder>() {
 
         holder.itemView.album_image.animate().setDuration(1000).alpha(1f).start()
         Picasso.get().load(album.cover_medium).into(holder.itemView.album_image)
+
+        holder.itemView.setOnClickListener { adapterCallbackAlbum.onClickItem(album)}
     }
+
+
+
 }
 
