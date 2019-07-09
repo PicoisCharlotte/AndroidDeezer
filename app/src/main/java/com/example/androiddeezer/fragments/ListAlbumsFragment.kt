@@ -21,26 +21,15 @@ import java.io.IOException
 
 
 class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
-    override fun onClickItem(album: Album) {
-        val fragment = ListTracksFragment.newInstance()
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.replace(R.id.album_fragment, fragment)
-        transaction.commit()
-    }
-
-    override fun goToTracks(idAlbum: Int?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     private val client = OkHttpClient()
+
     var albumList: MutableList<Album> = mutableListOf()
     val url = "http://api.deezer.com/2.0/user/2529/albums"
     lateinit var albumAdapter: AlbumAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        albumAdapter = AlbumAdapter(context)
+        albumAdapter = AlbumAdapter(context, this)
         linearLayoutManager = LinearLayoutManager(context)
 
         return inflater.inflate(R.layout.fragment_list_albums, container, false)
@@ -57,11 +46,11 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
     }
 
     companion object {
+
         fun newInstance(): ListAlbumsFragment {
             return ListAlbumsFragment()
         }
     }
-
     fun getAlbums(url: String) {
         val request = Request.Builder()
             .url(url)
@@ -98,5 +87,17 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
 
             }
         })
+    }
+
+    override fun onClickItem(album: Album) {
+        val fragment = ListTracksFragment.newInstance()
+        val transaction = childFragmentManager.beginTransaction()
+        transaction.replace(R.id.album_fragment, fragment)
+        transaction.remove(this)
+        transaction.commit()
+    }
+
+    override fun goToTracks(idAlbum: Int?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
