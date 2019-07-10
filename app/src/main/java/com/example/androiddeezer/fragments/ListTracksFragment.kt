@@ -1,5 +1,6 @@
 package com.example.androiddeezer.fragments
 
+import android.content.Context
 import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import com.example.androiddeezer.R
 import com.example.androiddeezer.adapters.AlbumAdapter
 import com.example.androiddeezer.adapters.TrackAdapter
+import com.example.androiddeezer.models.Album
 import com.example.androiddeezer.models.Tracks
 import kotlinx.android.synthetic.main.fragment_list_tracks.*
 import okhttp3.*
@@ -20,15 +22,21 @@ import java.io.IOException
 class ListTracksFragment :Fragment() {
     private val client = OkHttpClient()
     var trackList: MutableList<Tracks> = mutableListOf()
+
     //Adapt with correct id
-    var url = "http://api.deezer.com/2.0/album/49201/tracks"
+    var url = "http://api.deezer.com/2.0/album/$albumId/tracks"
+
     lateinit var trackAdapter: TrackAdapter
+
     private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         trackAdapter = TrackAdapter(context)
         linearLayoutManager = LinearLayoutManager(context)
+
+        print("album Id $albumId")
+
         return inflater.inflate(R.layout.fragment_list_tracks, container, false)
     }
 
@@ -41,12 +49,16 @@ class ListTracksFragment :Fragment() {
 
         getTracks(url)
     }
-
     companion object {
-        fun newInstance(): ListTracksFragment {
+        var albumId: Int? = null
+        fun newInstance(album: Album): ListTracksFragment {
+            albumId = album.id
+
+            //Must manage when no data
             return ListTracksFragment()
         }
     }
+
     fun getTracks(url: String) {
         val request = Request.Builder()
             .url(url)

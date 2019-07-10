@@ -90,17 +90,14 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
     }
 
     override fun onClickItem(album: Album) {
-        val fragment = ListTracksFragment.newInstance()
-        val transaction = childFragmentManager.beginTransaction()
-        //transaction.replace(R.id.album_content, fragment)
-        transaction.replace(R.id.album_fragment, fragment)
+        val fragment = ListTracksFragment.newInstance(album)
+        val transaction = fragmentManager.beginTransaction()
 
 
+        transaction.replace(R.id.content, fragment)
         transaction.addToBackStack(null)
-
         transaction.commit()
     }
-
     override fun goToTracks(idAlbum: Int?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

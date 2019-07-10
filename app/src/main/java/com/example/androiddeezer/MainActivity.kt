@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private fun openFragment(fragment: ListAlbumsFragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.content, fragment)
-        transaction.addToBackStack(null)
+        //transaction.addToBackStack(null)
         transaction.commit()
     }
 

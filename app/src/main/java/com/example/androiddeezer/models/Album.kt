@@ -3,7 +3,7 @@ package com.example.androiddeezer.models
 import org.json.JSONObject
 
 class Album {
-    private var id: String? = null
+    var id: Int? = null
     var title: String? = null
     var cover_medium: String? = null
     var release_date: String? = null
@@ -11,7 +11,7 @@ class Album {
 
     constructor(JObject: JSONObject) {
         if (JObject.has("id"))
-            this.id = JObject.getString("id")
+            this.id = JObject.getInt("id")
         if (JObject.has("title"))
             this.title = JObject.getString("title")
         if (JObject.has("cover_medium"))
@@ -24,7 +24,7 @@ class Album {
         }
     }
 
-
+    constructor()
 
 
     public fun getCoverMedium(): String? {

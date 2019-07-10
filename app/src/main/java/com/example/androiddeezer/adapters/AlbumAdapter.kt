@@ -20,17 +20,6 @@ class AlbumAdapter(val context: Context, private val adapterCallbackAlbum: Adapt
     private var albumList: MutableList<Album> = ArrayList()
     private var artist: Artist? = null
 
-    private lateinit var mListener: ItemClickCallback
-    internal lateinit var inflater: LayoutInflater
-
-    private var onClickListenerTracks: View.OnClickListener? = null
-
-    interface ItemClickCallback { fun onItemClick(position: Int) }
-
-    fun setOnItemClickListener(itemClickCallback: ItemClickCallback) {
-        mListener = itemClickCallback
-    }
-
     fun setData(data: MutableList<Album>) {
         albumList = data
 
