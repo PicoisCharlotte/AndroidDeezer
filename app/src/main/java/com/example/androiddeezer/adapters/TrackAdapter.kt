@@ -22,7 +22,7 @@ class TrackAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.View
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder  {
         val rowView: View
         rowView = LayoutInflater.from(context).inflate(R.layout.item_track, parent, false)
         return ViewHolder(rowView)
