@@ -4,15 +4,11 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.androiddeezer.MainActivity
-
 import com.example.androiddeezer.R
 import com.example.androiddeezer.adapters.AlbumAdapter
-import com.example.androiddeezer.adapters.TrackAdapter
 import com.example.androiddeezer.models.Album
 import interfaces.AdapterCallbackAlbum
 import kotlinx.android.synthetic.main.fragment_list_albums.*
@@ -25,10 +21,12 @@ import java.io.IOException
 class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
     private val client = OkHttpClient()
 
-    var albumList: MutableList<Album> = mutableListOf()
     val url = "http://api.deezer.com/2.0/user/2529/albums"
+    var albumList: MutableList<Album> = mutableListOf()
+
     lateinit var albumAdapter: AlbumAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         albumAdapter = AlbumAdapter(context, this)
@@ -40,7 +38,7 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        list_album_view.layoutManager = GridLayoutManager(context, 1) as RecyclerView.LayoutManager?
+        list_album_view.layoutManager = GridLayoutManager(context, 1)
         list_album_view.adapter = albumAdapter
 
         getAlbums(url)
@@ -93,14 +91,15 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
 
     override fun onClickItem(album: Album) {
         val fragment = ListTracksFragment.newInstance(album)
-        val transaction = fragmentManager.beginTransaction()
+        if(fragment.isAdded) {
+            return
+        } else {
+            val transaction = fragmentManager.beginTransaction()
 
-        transaction.replace(R.id.content, fragment)
-        transaction.remove(this)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
-    override fun goToTracks(idAlbum: Int?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            transaction.replace(R.id.content, fragment)
+            //transaction.remove(this)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 }

@@ -18,7 +18,6 @@ class AlbumAdapter(val context: Context, private val adapterCallbackAlbum: Adapt
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     private var albumList: MutableList<Album> = ArrayList()
-    private var artist: Artist? = null
 
     fun setData(data: MutableList<Album>) {
         albumList = data
@@ -29,9 +28,6 @@ class AlbumAdapter(val context: Context, private val adapterCallbackAlbum: Adapt
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val rowView: View
         rowView = LayoutInflater.from(context).inflate(R.layout.item_album, parent, false)
-
-
-
         return ViewHolder(rowView)
     }
 
@@ -42,8 +38,6 @@ class AlbumAdapter(val context: Context, private val adapterCallbackAlbum: Adapt
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val album = albumList[position]
-
-
 
         holder.itemView.album_title.text = album.title
         holder.itemView.album_artist.text = album.artist?.name

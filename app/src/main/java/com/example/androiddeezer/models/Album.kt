@@ -6,6 +6,7 @@ class Album {
     var id: Int? = null
     var title: String? = null
     var cover_medium: String? = null
+    var cover_big: String? = null
     var release_date: String? = null
     var artist: Artist? = null
 
@@ -16,6 +17,8 @@ class Album {
             this.title = JObject.getString("title")
         if (JObject.has("cover_medium"))
             this.cover_medium = JObject.getString("cover_small")
+        if (JObject.has("cover_big"))
+            this.cover_big = JObject.getString("cover_big")
         if (JObject.has("release_date"))
             this.release_date = JObject.getString("release_date")
         if (JObject.has("artist")) {

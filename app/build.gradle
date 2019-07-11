@@ -9,11 +9,7 @@ android {
     defaultConfig {
         applicationId "com.example.androiddeezer"
         minSdkVersion 24
-<<<<<<< HEAD
-        targetSdkVersion 26
-=======
         targetSdkVersion 24
->>>>>>> e0781df804484b470364542be8744d16061cc24f
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
