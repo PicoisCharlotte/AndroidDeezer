@@ -24,7 +24,7 @@ class ListTracksFragment :Fragment() {
     private val client = OkHttpClient()
 
     var trackList: MutableList<Tracks> = mutableListOf()
-    //Adapt with correct id
+
     var url = "http://api.deezer.com/2.0/album/$albumId/tracks"
 
     lateinit var trackAdapter: TrackAdapter
@@ -63,28 +63,22 @@ class ListTracksFragment :Fragment() {
         }
     }
     fun getTracks(url: String) {
-        var responseData: String? = null
         val request = Request.Builder()
             .url(url)
             .build()
         client.newCall(request).enqueue(object: Callback {
             override fun onFailure(call: Call, e : IOException) {}
             override fun onResponse(call: Call, response: Response) {
-                responseData = response.body?.string()
+                 val responseData = response.body?.string()
 
                 try {
                     val json = JSONObject(responseData)
                     val datas = json.getJSONArray("data")
 
-                    println("Request successful!")
                     for(i in 0..(datas.length() - 1)) {
                         val track = datas.getJSONObject(i)
 
                         trackList.add(Tracks(track))
-                    }
-
-                    for (i in 0..(trackList.size - 1)) {
-                        println("track ${trackList[i]}")
                     }
 
                     activity.runOnUiThread {
@@ -95,13 +89,12 @@ class ListTracksFragment :Fragment() {
 
                 } catch (e: JSONException) {
                     activity.runOnUiThread {
-                        context.toast("No datas found for this tracklist")
+                        context.toast(getString(R.string.noTracksFound))
 
                         goBackToAlbumList()
                     }
                     e.printStackTrace()
                 }
-
             }
         })
     }

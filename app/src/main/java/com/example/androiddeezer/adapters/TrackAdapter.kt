@@ -6,10 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.androiddeezer.R
-import com.example.androiddeezer.fragments.ListTracksFragment
-import com.example.androiddeezer.models.Artist
 import com.example.androiddeezer.models.Tracks
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_track.view.*
 
 class TrackAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -45,6 +42,15 @@ class TrackAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.View
 
         holder?.itemView?.track_title?.text = track.title
         holder?.itemView?.track_artist?.text = track.artist?.name
-        holder?.itemView?.track_duration?.text = track.duration.toString()
+        holder?.itemView?.track_duration?.text = convertSecondsToMinutesSeconds(track.duration!!)
+    }
+
+    fun convertSecondsToMinutesSeconds(secondToConvert: Int): String {
+        val duration: Int = secondToConvert
+        var seconds: Int? = duration % 60
+        val minutes: Int? = (duration / 60) % 60
+
+
+        return "$minutes:${String.format("%02d", seconds)}"
     }
 }
