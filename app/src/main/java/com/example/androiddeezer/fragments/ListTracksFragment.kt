@@ -39,10 +39,6 @@ class ListTracksFragment :Fragment(), AdapaterCallbackTracksNotFound {
         linearLayoutManager = LinearLayoutManager(context)
 
 
-        //var albumImg: String = trackAdapter.getAlbumImg(albumCoverBig!!).toString()
-
-        //Picasso.get().load(albumCoverBig).into(album_img)
-
         return inflater.inflate(R.layout.fragment_list_tracks, container, false)
     }
 
@@ -52,7 +48,7 @@ class ListTracksFragment :Fragment(), AdapaterCallbackTracksNotFound {
         list_track_view.layoutManager = GridLayoutManager(context, 1)
         list_track_view.adapter = trackAdapter
 
-        var albumImg: String = trackAdapter.getAlbumImg(albumCoverBig!!).toString()
+        trackAdapter.getAlbumImg(albumCoverBig!!).toString()
 
         Picasso.get().load(albumCoverBig).into(album_img)
 

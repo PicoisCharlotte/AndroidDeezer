@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.androiddeezer.R
+import com.example.androiddeezer.fragments.ListTracksFragment
 import com.example.androiddeezer.models.Artist
 import com.example.androiddeezer.models.Tracks
 import com.squareup.picasso.Picasso
@@ -31,8 +32,6 @@ class TrackAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder  {
         val rowView: View = LayoutInflater.from(context).inflate(R.layout.item_track, parent, false)
 
-        print("album image : ${getAlbumImg(albumCover!!)}")
-
         return ViewHolder(rowView)
 
     }
@@ -47,9 +46,5 @@ class TrackAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.View
         holder?.itemView?.track_title?.text = track.title
         holder?.itemView?.track_artist?.text = track.artist?.name
         holder?.itemView?.track_duration?.text = track.duration.toString()
-
-        //Picasso.get().load(albumCover).into(holder?.itemView?.album_image)
     }
-
-
 }
