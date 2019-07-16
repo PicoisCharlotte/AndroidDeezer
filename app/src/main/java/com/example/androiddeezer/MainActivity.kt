@@ -1,22 +1,11 @@
 package com.example.androiddeezer
 
-import android.content.Intent
-import android.media.MediaPlayer
-import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.widget.Toast
-import com.example.androiddeezer.activities.MusicActivity
-import com.example.androiddeezer.managers.MusicManager
-import com.example.androiddeezer.models.Track
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.music_controller.*
-import kotlinx.android.synthetic.main.music_controller.music_controller
+import android.support.v7.app.AppCompatActivity
+import com.example.androiddeezer.fragments.ListAlbumsFragment
 
 class MainActivity : AppCompatActivity() {
+
 
     private var mediaPlayer = MediaPlayer()
     public var isActive = false
@@ -25,13 +14,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //setMusicControllerVisibility(isActive)
-        go_to_music.setOnClickListener({
-             intent = Intent(this, MusicActivity::class.java)
-            startActivity(intent);
-        })
+
+        val albumFragment = ListAlbumsFragment.newInstance()
+        openFragment(albumFragment)
     }
 
+    private fun openFragment(fragment: ListAlbumsFragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.content, fragment)
+        //transaction.addToBackStack(null)
+        transaction.commit()
+    }
     fun activateMusic(){
         setOnclicks()
     }
@@ -69,4 +62,6 @@ class MainActivity : AppCompatActivity() {
             })
         }
     }
+
+
 }
