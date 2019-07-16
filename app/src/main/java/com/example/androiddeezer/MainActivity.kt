@@ -1,5 +1,6 @@
 package com.example.androiddeezer
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
@@ -8,11 +9,14 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
+import com.example.androiddeezer.activities.MusicActivity
+import com.example.androiddeezer.managers.MusicManager
 import com.example.androiddeezer.models.Track
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.music_controller.*
+import kotlinx.android.synthetic.main.music_controller.music_controller
 
 class MainActivity : AppCompatActivity() {
-
 
     private var mediaPlayer = MediaPlayer()
     public var isActive = false
@@ -22,9 +26,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //setMusicControllerVisibility(isActive)
+        go_to_music.setOnClickListener({
+             intent = Intent(this, MusicActivity::class.java)
+            startActivity(intent);
+        })
     }
 
-    fun activateMusic(track: Track){
+    fun activateMusic(){
         setOnclicks()
     }
 
@@ -44,33 +52,20 @@ class MainActivity : AppCompatActivity() {
     fun setOnclicks(){
         if(currentTrack != null) {
             btn_back.setOnClickListener({
-                Toast.makeText(this@MainActivity, "BACK", Toast.LENGTH_LONG)
-
-
+                MusicManager.newInstance(this).previous()
             })
             btn_play.setOnClickListener({
-                Toast.makeText(this@MainActivity, "PLAY", Toast.LENGTH_LONG)
                 btn_pause.visibility = View.VISIBLE
                 btn_play.visibility = View.GONE
-                try {
-                    val previewUri: Uri = Uri.parse(currentTrack.getPreview())
-                    mediaPlayer.setDataSource(this@MainActivity, previewUri)
-                    mediaPlayer.prepare()
-                    mediaPlayer.start()
-                } catch (e: Exception) {
-                    Toast.makeText(this, "The file does not exist", Toast.LENGTH_LONG).show()
-                }
+                MusicManager.newInstance(this).play()
             })
             btn_pause.setOnClickListener({
-                Toast.makeText(this@MainActivity, "PAUSE", Toast.LENGTH_LONG)
                 btn_play.visibility = View.VISIBLE
                 btn_pause.visibility = View.GONE
-                mediaPlayer.pause()
+                MusicManager.newInstance(this).pause()
             })
             btn_next.setOnClickListener({
-                Toast.makeText(this@MainActivity, "NEXT", Toast.LENGTH_LONG)
-
-
+                MusicManager.newInstance(this).next()
             })
         }
     }

@@ -23,6 +23,9 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 import java.net.URL
+import android.content.Intent
+
+
 
 class MusicActivity : AppCompatActivity() {
 
@@ -36,7 +39,7 @@ class MusicActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_music)
 
-        mainAct.setMusicControllerVisibility(false)
+        //mainAct.setMusicControllerVisibility(false)
         getMusic()
     }
 
@@ -67,6 +70,7 @@ class MusicActivity : AppCompatActivity() {
                             .into(image_album);  // imageview object
                     })
                     mainAct.isActive = true
+                    //mainAct.activateMusic()
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
