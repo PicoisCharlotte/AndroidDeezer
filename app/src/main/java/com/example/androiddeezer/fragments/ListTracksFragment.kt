@@ -20,7 +20,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 
-class ListTracksFragment :Fragment() {
+class ListTracksFragment : Fragment(){
     private val client = OkHttpClient()
 
     var trackList: MutableList<Tracks> = mutableListOf()
@@ -33,14 +33,14 @@ class ListTracksFragment :Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        trackAdapter = TrackAdapter(context)
+        trackAdapter = TrackAdapter(context!!)
         linearLayoutManager = LinearLayoutManager(context)
 
         return inflater.inflate(R.layout.fragment_list_tracks, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view!!, savedInstanceState)
 
         list_track_view.layoutManager = GridLayoutManager(context, 1)
         list_track_view.adapter = trackAdapter

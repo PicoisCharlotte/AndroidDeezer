@@ -10,6 +10,8 @@ import com.example.androiddeezer.models.Tracks
 import kotlinx.android.synthetic.main.item_track.view.*
 
 class TrackAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     private var trackList: MutableList<Tracks> = ArrayList()
@@ -33,16 +35,16 @@ class TrackAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.View
 
     }
 
-    override fun getItemCount(): Int {
-        return trackList.size
+    override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
+        val track = trackList[p1]
+
+        p0.itemView.track_title?.text = track.title
+        p0.itemView.track_artist?.text = track.artist?.name
+        p0.itemView.track_duration?.text = convertSecondsToMinutesSeconds(track.duration!!)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        val track = trackList[position]
-
-        holder?.itemView?.track_title?.text = track.title
-        holder?.itemView?.track_artist?.text = track.artist?.name
-        holder?.itemView?.track_duration?.text = convertSecondsToMinutesSeconds(track.duration!!)
+    override fun getItemCount(): Int {
+        return trackList.size
     }
 
     fun convertSecondsToMinutesSeconds(secondToConvert: Int): String {
