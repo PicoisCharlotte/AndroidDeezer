@@ -10,4 +10,8 @@ class Artist {
         if(JObject.has("name"))
             name = JObject.getString("name")
     }
+
+    public fun getName(): String?{
+        return name
+    }
 }

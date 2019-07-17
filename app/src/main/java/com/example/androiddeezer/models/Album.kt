@@ -3,7 +3,7 @@ package com.example.androiddeezer.models
 import org.json.JSONObject
 
 class Album {
-    private var id: String? = null
+    private var id: Int? = null
     private var title: String? = null
     private var cover_small: String? = null
     private var cover_medium: String? = null
@@ -14,12 +14,11 @@ class Album {
     private var artist: Artist? = null
     private var release_date: String? = null
 
-
     constructor()
 
     constructor(JObject: JSONObject){
         if(JObject.has("id"))
-            this.id = JObject.getString("id")
+            this.id = JObject.getInt("id")
         if(JObject.has("title"))
             this.title = JObject.getString("title")
         if(JObject.has("cover_small"))
@@ -40,6 +39,18 @@ class Album {
             this.release_date = JObject.getString("release_date")
     }
 
+    public fun getId(): Int? {
+        return id
+    }
+    public fun getTitle(): String? {
+        return title
+    }
+    public fun getArtistName(): String? {
+        return artist?.getName()
+    }
+    public fun getReleaseDate(): String? {
+        return release_date
+    }
     public fun getCoverSmall(): String? {
         return cover_small
     }
@@ -48,6 +59,9 @@ class Album {
     }
     public fun getCover(): String? {
         return cover
+    }
+    public fun getCoverBig(): String? {
+        return cover_big
     }
 
     override fun toString(): String {

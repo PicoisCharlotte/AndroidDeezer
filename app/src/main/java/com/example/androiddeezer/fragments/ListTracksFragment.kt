@@ -1,6 +1,7 @@
 package com.example.androiddeezer.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -10,8 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.androiddeezer.R
+import com.example.androiddeezer.activities.MusicActivity
 import com.example.androiddeezer.adapters.TrackAdapter
+import com.example.androiddeezer.interfaces.AdapterCallbackTrack
+import com.example.androiddeezer.managers.MusicManager
 import com.example.androiddeezer.models.Album
+import com.example.androiddeezer.models.Track
 import com.example.androiddeezer.models.Tracks
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_list_tracks.*
@@ -20,10 +25,10 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 
-class ListTracksFragment : Fragment(){
+class ListTracksFragment : Fragment(), AdapterCallbackTrack{
     private val client = OkHttpClient()
 
-    var trackList: MutableList<Tracks> = mutableListOf()
+    var trackList: MutableList<Track> = mutableListOf()
 
     var url = "http://api.deezer.com/2.0/album/$albumId/tracks"
 
@@ -33,14 +38,14 @@ class ListTracksFragment : Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        trackAdapter = TrackAdapter(context!!)
+        trackAdapter = TrackAdapter(context!!, this)
         linearLayoutManager = LinearLayoutManager(context)
 
         return inflater.inflate(R.layout.fragment_list_tracks, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view!!, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         list_track_view.layoutManager = GridLayoutManager(context, 1)
         list_track_view.adapter = trackAdapter
@@ -56,8 +61,8 @@ class ListTracksFragment : Fragment(){
         var albumId: Int? = null
         var albumCoverBig: String? = null
         fun newInstance(album: Album): ListTracksFragment {
-            albumId = album.id
-            albumCoverBig = album.cover_big
+            albumId = album.getId()
+            albumCoverBig = album.getCoverBig()
 
             return ListTracksFragment()
         }
@@ -78,18 +83,18 @@ class ListTracksFragment : Fragment(){
                     for(i in 0..(datas.length() - 1)) {
                         val track = datas.getJSONObject(i)
 
-                        trackList.add(Tracks(track))
+                        trackList.add(Track(track))
                     }
 
-                    activity.runOnUiThread {
+                    activity?.runOnUiThread {
                         trackAdapter.setData(trackList)
 
                         trackAdapter.notifyDataSetChanged()
                     }
 
                 } catch (e: JSONException) {
-                    activity.runOnUiThread {
-                        context.toast(getString(R.string.noTracksFound))
+                    activity?.runOnUiThread {
+                        context?.toast(getString(R.string.noTracksFound))
 
                         goBackToAlbumList()
                     }
@@ -106,10 +111,16 @@ class ListTracksFragment : Fragment(){
     fun goBackToAlbumList() {
         val fragment = ListAlbumsFragment.newInstance()
 
-        val transaction = fragmentManager.beginTransaction()
+        val transaction = fragmentManager?.beginTransaction()
 
-        transaction.replace(R.id.content, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+        transaction?.replace(R.id.content, fragment)
+        transaction?.addToBackStack(null)
+        transaction?.commit()
+    }
+
+    override fun onClickItem(track: Track) {
+        context?.let { MusicManager.newInstance(it).setCurrentTrack(track) }
+        var intent = Intent(context, MusicActivity::class.java)
+        startActivity(intent)
     }
 }

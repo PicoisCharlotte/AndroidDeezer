@@ -9,9 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.androiddeezer.R
 import com.example.androiddeezer.models.Album
-import com.example.androiddeezer.models.Artist
 import com.squareup.picasso.Picasso
-import interfaces.AdapterCallbackAlbum
+import com.example.androiddeezer.interfaces.AdapterCallbackAlbum
 import kotlinx.android.synthetic.main.item_album.view.*
 
 class AlbumAdapter(val context: Context, private val adapterCallbackAlbum: AdapterCallbackAlbum): Adapter<ViewHolder>() {
@@ -39,15 +38,15 @@ class AlbumAdapter(val context: Context, private val adapterCallbackAlbum: Adapt
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val album = albumList[position]
 
-        holder.itemView.album_title.text = album.title
-        holder.itemView.album_artist.text = album.artist?.name
-        holder.itemView.album_release_date.text = album.release_date
+        holder.itemView.album_title.text = album.getTitle()
+        holder.itemView.album_artist.text = album.getArtistName()
+        holder.itemView.album_release_date.text = album.getReleaseDate()
         Picasso.get().load(R.drawable.progress_animation).placeholder(R.drawable.progress_animation).into(holder.itemView.album_image)
 
         holder.itemView.album_image.alpha = 0f
 
         holder.itemView.album_image.animate().setDuration(1000).alpha(1f).start()
-        Picasso.get().load(album.cover_medium).into(holder.itemView.album_image)
+        Picasso.get().load(album.getCoverMedium()).into(holder.itemView.album_image)
 
         holder.itemView.setOnClickListener { adapterCallbackAlbum.onClickItem(album)}
     }

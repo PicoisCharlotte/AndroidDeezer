@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import com.example.androiddeezer.R
 import com.example.androiddeezer.adapters.AlbumAdapter
 import com.example.androiddeezer.models.Album
-import interfaces.AdapterCallbackAlbum
+import com.example.androiddeezer.interfaces.AdapterCallbackAlbum
 import kotlinx.android.synthetic.main.fragment_list_albums.*
 import okhttp3.*
 import org.json.JSONException
@@ -36,7 +36,7 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view!!, savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
 
         list_album_view.layoutManager = GridLayoutManager(context, 1)
         list_album_view.adapter = albumAdapter

@@ -24,7 +24,8 @@ import org.json.JSONObject
 import java.io.IOException
 import java.net.URL
 import android.content.Intent
-
+import com.example.androiddeezer.managers.MusicManager
+import com.example.androiddeezer.services.MusicService
 
 
 class MusicActivity : AppCompatActivity() {
@@ -39,12 +40,14 @@ class MusicActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_music)
 
+        setOnclicks()
         //mainAct.setMusicControllerVisibility(false)
         getMusic()
     }
 
     fun getMusic(){
-        var urlString = "https://api.deezer.com/track/3135556"
+        var urlString = "https://api.deezer.com/track/"
+        urlString += MusicManager.newInstance(this).getCurrentTrack().getIdTrack()
         val url = URL(urlString)
         val request = Request.Builder()
             .url(url)
@@ -55,22 +58,23 @@ class MusicActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                var body = response?.body()?.string()
+                var body = response.body?.string()
 
                 try {
                     val Jobject = JSONObject(body)
 
-                    track = Track(Jobject)
-                    mainAct.currentTrack = track
-                    album = track.getAlbum()
-                    artist = track.getArtist()
-                    this@MusicActivity.runOnUiThread(java.lang.Runnable {
-                        Glide.with(this@MusicActivity)
-                            .load(album.getCoverMedium())
-                            .into(image_album);  // imageview object
-                    })
-                    mainAct.isActive = true
-                    //mainAct.activateMusic()
+                    if(Jobject.has("error")){
+
+                    } else {
+                        track = Track(Jobject)
+                        album = track.getAlbum()
+                        artist = track.getArtist()
+                        this@MusicActivity.runOnUiThread(java.lang.Runnable {
+                            Glide.with(this@MusicActivity)
+                                .load(album.getCoverMedium())
+                                .into(image_album)
+                        })
+                    }
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
@@ -79,10 +83,24 @@ class MusicActivity : AppCompatActivity() {
         })
 
     }
-
-
-
-
-
-
+    fun setOnclicks(){
+        if(MusicManager.newInstance(this@MusicActivity).getCurrentTrack() != null) {
+            btn_back.setOnClickListener({
+                MusicManager.newInstance(this).previous(0)
+            })
+            btn_play.setOnClickListener({
+                btn_pause.visibility = View.VISIBLE
+                btn_play.visibility = View.GONE
+                startService(Intent(this, MusicService::class.java))
+            })
+            btn_pause.setOnClickListener({
+                btn_play.visibility = View.VISIBLE
+                btn_pause.visibility = View.GONE
+                stopService(Intent(this, MusicService::class.java))
+            })
+            btn_next.setOnClickListener({
+                MusicManager.newInstance(this).next(0)
+            })
+        }
+    }
 }

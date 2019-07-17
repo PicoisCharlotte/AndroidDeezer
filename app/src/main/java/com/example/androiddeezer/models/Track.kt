@@ -38,6 +38,16 @@ class Track {
         }
     }
 
+    public fun getIdTrack(): String{
+        return idTrack
+    }
+
+    public fun getTitleTrack(): String?{
+        return titleTrack
+    }
+    public fun getDuration(): String?{
+        return duration
+    }
     public fun getAlbum(): Album{
         return albumTrack
     }
