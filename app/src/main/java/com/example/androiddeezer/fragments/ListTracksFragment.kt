@@ -1,14 +1,16 @@
 package com.example.androiddeezer.fragments
 
-import android.content.Context
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.graphics.Palette
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.androiddeezer.R
 import com.example.androiddeezer.adapters.TrackAdapter
 import com.example.androiddeezer.models.Album
@@ -49,6 +51,8 @@ class ListTracksFragment :Fragment() {
 
         Picasso.get().load(albumCoverBig).into(album_img)
 
+        createGradientFromAlbumCover()
+
         getTracks(url)
     }
 
@@ -69,47 +73,65 @@ class ListTracksFragment :Fragment() {
         client.newCall(request).enqueue(object: Callback {
             override fun onFailure(call: Call, e : IOException) {}
             override fun onResponse(call: Call, response: Response) {
-                 val responseData = response.body?.string()
+                val responseData = response.body?.string()
 
                 try {
                     val json = JSONObject(responseData)
-                    val datas = json.getJSONArray("data")
+                    if(json.has("data")) {
+                        val datas = json.getJSONArray("data")
 
-                    for(i in 0..(datas.length() - 1)) {
-                        val track = datas.getJSONObject(i)
+                        for(i in 0..(datas.length() - 1)) {
+                            val track = datas.getJSONObject(i)
 
-                        trackList.add(Tracks(track))
-                    }
+                            trackList.add(Tracks(track))
+                        }
 
-                    activity.runOnUiThread {
-                        trackAdapter.setData(trackList)
+                        activity.runOnUiThread {
+                            trackAdapter.setData(trackList)
 
-                        trackAdapter.notifyDataSetChanged()
+                            trackAdapter.notifyDataSetChanged()
+                        }
+                    } else {
+                        activity.runOnUiThread {
+                            list_empty.visibility = VISIBLE
+                        }
                     }
 
                 } catch (e: JSONException) {
-                    activity.runOnUiThread {
-                        context.toast(getString(R.string.noTracksFound))
-
-                        goBackToAlbumList()
-                    }
                     e.printStackTrace()
                 }
             }
         })
     }
 
-    fun Context.toast(message: CharSequence) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
+    fun createGradientFromAlbumCover() {
+        Picasso
+            .get()
+            .load(albumCoverBig)
+            .into(album_img, object: com.squareup.picasso.Callback {
+                override fun onError(e: java.lang.Exception?) {
+                }
 
-    fun goBackToAlbumList() {
-        val fragment = ListAlbumsFragment.newInstance()
+                override fun onSuccess() {
+                    val bitmap: BitmapDrawable = album_img.drawable as BitmapDrawable
+                    val palette = Palette.from(bitmap.bitmap).generate()
 
-        val transaction = fragmentManager.beginTransaction()
+                    val profileColor = palette.swatches
 
-        transaction.replace(R.id.content, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+                    val profileInt = mutableListOf<Int>()
+
+                    for(color: Palette.Swatch in profileColor) {
+                        profileInt.add(color.rgb)
+                    }
+
+                    val gd = GradientDrawable(
+                        GradientDrawable.Orientation.BOTTOM_TOP,
+                        profileInt.toIntArray()
+                    )
+
+                    image_background.background = gd
+
+                }
+            })
     }
 }

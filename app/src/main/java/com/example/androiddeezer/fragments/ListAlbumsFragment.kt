@@ -36,7 +36,7 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view!!, savedInstanceState)
 
         list_album_view.layoutManager = GridLayoutManager(context, 1)
         list_album_view.adapter = albumAdapter
@@ -52,6 +52,7 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
         }
     }
     fun getAlbums(url: String) {
+
         val request = Request.Builder()
             .url(url)
             .build()

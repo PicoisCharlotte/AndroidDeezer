@@ -41,8 +41,7 @@
                 android:fontFamily="@font/cooljazz"
                 android:paddingEnd="5dp"
                 android:layout_alignParentRight="true"
-                android:text="D"
-        />
+                android:text="D"/>
 
     </RelativeLayout>
 
