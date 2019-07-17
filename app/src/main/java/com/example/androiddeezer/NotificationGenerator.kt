@@ -14,20 +14,9 @@ object NotificationGenerator {
     val NOTIFY_PLAY = "com.example.androiddeezer.play"
     val NOTIFY_NEXT = "com.example.androiddeezer.next"
 
-    private val NOTIFICATION_ID_OPEN_ACTIVITY = 9
     private val NOTIFICATION_ID_CUSTOM_BIG = 9
-    /*        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                NotificationChannel channel1 = new NotificationChannel(
-                        CHANNEL_ID_1,
-                        CHANNEL_NAME_1,
-                        NotificationManager.IMPORTANCE_HIGH
-                );
-                channel1.enableLights(true);
-                channel1.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-     //           NotificationCompat.Builder nc = new NotificationCompat.Builder(context);
-     //           NotificationManager nm = (NotificationManager) context.getSystemService(NotificationManager.class);*/
 
-    fun customBigNotification(context: Context) {
+    fun customBigNotification(context: Context, titre: String, album_art: Int) {
         val expandedView = RemoteViews(context.packageName, R.layout.big_notification)
 
         val nc = NotificationCompat.Builder(context)
@@ -39,11 +28,12 @@ object NotificationGenerator {
         nc.setContentIntent(pendingIntent)
         nc.setSmallIcon(R.drawable.ic_action_play)
         nc.setAutoCancel(true)
+
+        expandedView.setTextViewText(R.id.textSongName, titre)
+        expandedView.setImageViewResource(R.id.album_art, album_art)
         nc.setCustomBigContentView(expandedView)
         nc.setContentTitle("Music Player")
         nc.setContentText("Control Audio")
-        //nc.().setContentText(R.id.textSongName, "Adele");
-        //   nc.getBigContentView().setTextViewText(R.id.textSongName, "Adele");
 
         setListeners(expandedView, context)
 

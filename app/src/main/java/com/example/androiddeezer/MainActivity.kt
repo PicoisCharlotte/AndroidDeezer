@@ -21,9 +21,7 @@ class MainActivity : AppCompatActivity() {
         openFragment(albumFragment)
 
         val button = findViewById(R.id.playFab)
-        val textSongName = findViewById(R.id.textSongName)
         button.setOnClickListener {onPlay()}
-        //createNotificationChannel();
     }
 
     private fun openFragment(fragment: ListAlbumsFragment) {
@@ -36,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     private fun onPlay(){
         Log.i("heyhey", "yoyo")
         //NotificationGenerator.openActivityNotification(applicationContext)
-        NotificationGenerator.customBigNotification(applicationContext)
+        NotificationGenerator.customBigNotification(applicationContext, "C'est la mer noiw",  R.drawable.ic_action_pause)
     }
 
 

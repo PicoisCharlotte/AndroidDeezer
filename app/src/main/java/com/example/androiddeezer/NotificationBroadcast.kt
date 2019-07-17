@@ -15,8 +15,10 @@ class NotificationBroadcast : BroadcastReceiver() {
             Toast.makeText(context, "NOTIFY_PAUSE", Toast.LENGTH_LONG).show()
         } else if (intent.action == NotificationGenerator.NOTIFY_NEXT) {
             Toast.makeText(context, "NOTIFY_NEXT", Toast.LENGTH_LONG).show()
+            NotificationGenerator.customBigNotification(context, "EN bas ",  R.drawable.ic_action_fast_backward)
         } else if (intent.action == NotificationGenerator.NOTIFY_DELETE) {
             Toast.makeText(context, "NOTIFY_DELETE", Toast.LENGTH_LONG).show()
+            NotificationGenerator.customBigNotification(context, "EN haut ",  R.drawable.album_art)
         } else if (intent.action == NotificationGenerator.NOTIFY_PREVIOUS) {
             Toast.makeText(context, "NOTIFY_PREVIOUS", Toast.LENGTH_LONG).show()
         }
