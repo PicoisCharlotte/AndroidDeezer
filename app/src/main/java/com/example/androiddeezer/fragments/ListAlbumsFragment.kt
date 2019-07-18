@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import com.example.androiddeezer.R
 import com.example.androiddeezer.adapters.AlbumAdapter
 import com.example.androiddeezer.models.Album
-import interfaces.AdapterCallbackAlbum
+import com.example.androiddeezer.interfaces.AdapterCallbackAlbum
 import kotlinx.android.synthetic.main.fragment_list_albums.*
 import okhttp3.*
 import org.json.JSONException
@@ -29,14 +29,14 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        albumAdapter = AlbumAdapter(context, this)
+        albumAdapter = AlbumAdapter(context!!, this)
         linearLayoutManager = LinearLayoutManager(context)
 
         return inflater.inflate(R.layout.fragment_list_albums, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view!!, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         list_album_view.layoutManager = GridLayoutManager(context, 1)
         list_album_view.adapter = albumAdapter
@@ -77,7 +77,7 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
                         println("album ${albumList[i]}")
                     }
 
-                    activity.runOnUiThread {
+                    activity?.runOnUiThread {
                         albumAdapter.setData(albumList)
                         albumAdapter.notifyDataSetChanged()
                     }
@@ -95,12 +95,12 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
         if(fragment.isAdded) {
             return
         } else {
-            val transaction = fragmentManager.beginTransaction()
+            val transaction = fragmentManager?.beginTransaction()
 
-            transaction.replace(R.id.content, fragment)
+            transaction?.replace(R.id.content, fragment)
             //transaction.remove(this)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            transaction?.addToBackStack(null)
+            transaction?.commit()
         }
     }
 }

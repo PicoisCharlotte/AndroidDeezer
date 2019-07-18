@@ -1,8 +1,6 @@
 package com.example.androiddeezer.adapters
 
 import android.content.Context
-import android.graphics.drawable.BitmapDrawable
-import android.support.v7.graphics.Palette
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.Adapter
 import android.support.v7.widget.RecyclerView.ViewHolder
@@ -12,9 +10,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.androiddeezer.R
 import com.example.androiddeezer.models.Album
-import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import interfaces.AdapterCallbackAlbum
+import com.example.androiddeezer.interfaces.AdapterCallbackAlbum
 import kotlinx.android.synthetic.main.item_album.view.*
 
 class AlbumAdapter(val context: Context, private val adapterCallbackAlbum: AdapterCallbackAlbum): Adapter<ViewHolder>() {

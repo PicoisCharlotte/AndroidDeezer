@@ -15,6 +15,8 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_track.view.*
 
 class TrackAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     private var trackList: MutableList<Tracks> = ArrayList()
@@ -39,18 +41,16 @@ class TrackAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.View
 
     }
 
-    override fun getItemCount(): Int {
-        return trackList.size
+    override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
+        val track = trackList[p1]
+
+        p0.itemView.track_title?.text = track.title
+        p0.itemView.track_artist?.text = track.artist?.name
+        p0.itemView.track_duration?.text = convertSecondsToMinutesSeconds(track.duration!!)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        val track = trackList[position]
-
-        holder?.itemView?.track_title?.text = track.title
-        holder?.itemView?.track_artist?.text = track.artist?.name
-        holder?.itemView?.track_duration?.text = convertSecondsToMinutesSeconds(track.duration!!)
-
-        holder?.itemView.item_background.background = sth()
+    override fun getItemCount(): Int {
+        return trackList.size
     }
 
     fun convertSecondsToMinutesSeconds(secondToConvert: Int): String {
@@ -61,56 +61,4 @@ class TrackAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.View
         return "$minutes:${String.format("%02d", seconds)}"
     }
 
-    fun sth(): BitmapDrawable {
-        Picasso.get().load(albumCover)
-
-        val bitmap: BitmapDrawable = Picasso.get().load(albumCover) as BitmapDrawable
-
-        val palette = Palette.from(bitmap.bitmap).generate()
-
-
-
-        return palette.lightVibrantSwatch
-
-
-
-
-        /*Picasso
-            .get()
-            .load(albumCover)
-            .into(album_img, object: com.squareup.picasso.Callback {
-                override fun onError(e: java.lang.Exception?) {
-                }
-
-                override fun onSuccess() {
-                    val bitmap: BitmapDrawable = album_img.drawable as BitmapDrawable
-                    val palette = Palette.from(bitmap.bitmap).generate()
-
-                    val profileColor = palette.swatches
-
-                    val profileInt = mutableListOf<Int>()
-
-                    for(color: Palette.Swatch in profileColor) {
-                        profileInt.add(color.rgb)
-                    }
-
-                    val gd = GradientDrawable(
-                        GradientDrawable.Orientation.BOTTOM_TOP,
-                        profileInt.toIntArray()
-                    )
-
-                    image_background.background = gd
-
-                }
-            })
-
-        val color =
-        val gd = GradientDrawable(
-            GradientDrawable.Orientation.BOTTOM_TOP,
-            profileInt.toIntArray()
-        )
-
-
-        return gd*/
-    }
 }
