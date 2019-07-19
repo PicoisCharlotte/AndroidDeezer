@@ -46,17 +46,7 @@ class MainActivity : AppCompatActivity() {
         val button = playFab
         button.setOnClickListener {onPlay()}
 
-        NotificationGenerator.launchNotifManager(applicationContext);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-//            notificationManager =
-//                getSystemService(
-//                    Context.NOTIFICATION_SERVICE) as NotificationManager
-//
-//            createNotificationChannel(
-//                "com.example.androiddeezer.player",
-//                "Player",
-//                "Player Android Deezer")
-//         }
+        NotificationGenerator.launchNotifManager(applicationContext)
     }
 
     private fun openFragment(fragment: ListAlbumsFragment) {
