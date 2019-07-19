@@ -23,7 +23,6 @@ class AlbumAdapter(val context: Context, private val adapterCallbackAlbum: Adapt
     fun setData(data: MutableList<Album>) {
         albumList = data
 
-        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,16 +39,17 @@ class AlbumAdapter(val context: Context, private val adapterCallbackAlbum: Adapt
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val album = albumList[position]
 
-        holder.itemView.album_title.text = album.title
-        holder.itemView.album_artist.text = album.artist?.name
-        holder.itemView.album_release_date.text = album.release_date
+        holder.itemView.album_title.text = album.getTitle()
+        holder.itemView.album_artist.text = album.getArtistName()
+        holder.itemView.album_release_date.text = album.getReleaseDate()
+        holder.itemView.album_content.setBackgroundColor(Color.parseColor("#FEF9EF"))
 
         Picasso.get().load(R.drawable.progress_animation).placeholder(R.drawable.progress_animation).into(holder.itemView.album_image)
 
         holder.itemView.album_image.alpha = 0f
 
         holder.itemView.album_image.animate().setDuration(1000).alpha(1f).start()
-        Picasso.get().load(album.cover_medium).into(holder.itemView.album_image)
+        Picasso.get().load(album.getCoverMedium()).into(holder.itemView.album_image)
 
         holder.itemView.setOnClickListener { adapterCallbackAlbum.onClickItem(album)}
     }

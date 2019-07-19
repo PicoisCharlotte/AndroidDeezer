@@ -106,24 +106,17 @@ class ListTracksFragment : Fragment(), AdapterCallbackTrack{
                             trackList.add(Track(track))
                         }
 
-                        activity.runOnUiThread {
+                        activity?.runOnUiThread {
                             trackAdapter.setData(trackList)
                             trackAdapter.notifyDataSetChanged()
                         }
                     } else {
-                        activity.runOnUiThread {
+                        activity?.runOnUiThread {
                             list_empty.visibility = VISIBLE
                         }
                     }
-                        trackAdapter.notifyDataSetChanged()
-                    }
-
                 } catch (e: JSONException) {
-                    activity?.runOnUiThread {
-                        context?.toast(getString(R.string.noTracksFound))
 
-                } catch (e: JSONException) {
-                    e.printStackTrace()
                 }
             }
         })

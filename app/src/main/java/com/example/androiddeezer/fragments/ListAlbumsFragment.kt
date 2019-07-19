@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.text.method.TextKeyListener.clear
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.androiddeezer.R
 import com.example.androiddeezer.adapters.AlbumAdapter
 import com.example.androiddeezer.models.Album
-import com.example.androiddeezer.interfaces.AdapterCallbackAlbum
 import com.example.androiddeezer.interfaces.AdapterCallbackAlbum
 import com.example.androiddeezer.managers.MusicManager
 import kotlinx.android.synthetic.main.fragment_list_albums.*
@@ -68,6 +68,8 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
         }
     }
     fun getAlbums(url: String) {
+
+        albumList.clear()
 
         val request = Request.Builder()
             .url(url)

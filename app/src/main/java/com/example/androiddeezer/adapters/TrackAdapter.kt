@@ -50,9 +50,9 @@ class TrackAdapter(val context: Context, private val adapterCallbackTrack: Adapt
 
         p0.itemView.setOnClickListener{adapterCallbackTrack.onClickItem(track)}
 
-        p0.itemView.track_title?.text = track.title
-        p0.itemView.track_artist?.text = track.artist?.name
-        p0.itemView.track_duration?.text = convertSecondsToMinutesSeconds(track.duration!!)
+        p0.itemView.track_title?.text = track.getTitleTrack()
+        p0.itemView.track_artist?.text = track.getArtist().getName()
+        p0.itemView.track_duration?.text = convertSecondsToMinutesSeconds(track.getDuration())
         p0.itemView.track_content.setBackgroundColor(Color.parseColor("#FEF9EF"))
     }
 

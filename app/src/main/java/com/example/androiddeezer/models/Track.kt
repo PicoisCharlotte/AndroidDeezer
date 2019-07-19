@@ -6,7 +6,7 @@ class Track {
 
     private var idTrack : String = ""
     private var titleTrack : String = ""
-    private var duration: String = ""
+    private var duration: Int = 0
     private var position: Int = 0
     private var rank: String = ""
     private var preview: String = ""
@@ -21,7 +21,7 @@ class Track {
         if(JObject.has("title"))
             titleTrack = JObject.getString("title")
         if(JObject.has("duration"))
-            duration = JObject.getString("duration")
+            duration = JObject.getInt("duration")
         if(JObject.has("position"))
             position = JObject.getInt("position")
         if(JObject.has("rank"))
@@ -45,7 +45,7 @@ class Track {
     public fun getTitleTrack(): String?{
         return titleTrack
     }
-    public fun getDuration(): String?{
+    public fun getDuration(): Int{
         return duration
     }
     public fun getAlbum(): Album{
