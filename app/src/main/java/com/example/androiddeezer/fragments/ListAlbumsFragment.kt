@@ -73,10 +73,6 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
                         albumList.add(Album(album))
                     }
 
-                    for (i in 0..(albumList.size - 1)) {
-                        println("album ${albumList[i]}")
-                    }
-
                     activity?.runOnUiThread {
                         albumAdapter.setData(albumList)
                         albumAdapter.notifyDataSetChanged()

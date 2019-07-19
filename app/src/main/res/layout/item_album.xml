@@ -11,10 +11,11 @@
             android:layout_height="49dp"/>
 
     <RelativeLayout
+            android:id="@+id/item_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/relative_layout_background">
+            android:background="@drawable/relative_layout_album_background">
 
         <TextView
                 android:id="@+id/album_title"

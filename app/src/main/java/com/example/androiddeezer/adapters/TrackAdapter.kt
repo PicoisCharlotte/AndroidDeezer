@@ -2,6 +2,7 @@ package com.example.androiddeezer.adapters
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.GradientDrawable
 import android.support.v7.graphics.Palette
@@ -47,6 +48,7 @@ class TrackAdapter(val context: Context): RecyclerView.Adapter<RecyclerView.View
         p0.itemView.track_title?.text = track.title
         p0.itemView.track_artist?.text = track.artist?.name
         p0.itemView.track_duration?.text = convertSecondsToMinutesSeconds(track.duration!!)
+        p0.itemView.track_content.setBackgroundColor(Color.parseColor("#FEF9EF"))
     }
 
     override fun getItemCount(): Int {
