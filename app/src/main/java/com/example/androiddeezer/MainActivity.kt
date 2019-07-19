@@ -1,23 +1,23 @@
 package com.example.androiddeezer
 
-import android.content.Intent
-import android.media.MediaPlayer
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import com.example.androiddeezer.managers.MusicManager
-import com.example.androiddeezer.models.Track
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.os.Build
+import android.os.Bundle
 import android.support.annotation.RequiresApi
+import android.support.v7.app.AppCompatActivity
+import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import com.example.androiddeezer.fragments.ListAlbumsFragment
+import com.example.androiddeezer.managers.MusicManager
+import com.example.androiddeezer.models.Track
 import com.example.androiddeezer.services.MusicService
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_music.*
 
 class MainActivity : AppCompatActivity() {
     private var notificationManager: NotificationManager? = null
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         val albumFragment = ListAlbumsFragment.newInstance()
         openFragment(albumFragment)
 
+        btn_play.setOnClickListener {onPlay()}
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             notificationManager =
@@ -125,7 +126,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onPlay(){
-        //NotificationGenerator.openActivityNotification(applicationContext)
+        NotificationGenerator.launchNotif(applicationContext, "Titre",  R.drawable.ic_action_pause)
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
