@@ -23,6 +23,8 @@ import org.json.JSONObject
 import java.io.IOException
 import java.net.URL
 import android.content.Intent
+import android.widget.Button
+import com.example.androiddeezer.NotificationGenerator
 import com.example.androiddeezer.managers.MusicManager
 import com.example.androiddeezer.services.MusicService
 
@@ -42,6 +44,9 @@ class MusicActivity : AppCompatActivity() {
         setOnclicks()
         //mainAct.setMusicControllerVisibility(false)
         getMusic()
+
+        val button = findViewById<Button>(R.id.playFab)
+        button.setOnClickListener {onPlay()}
     }
 
     fun getMusic(){
@@ -82,6 +87,10 @@ class MusicActivity : AppCompatActivity() {
         })
 
     }
+    private fun onPlay(){
+        NotificationGenerator.launchNotif(applicationContext, "Titre",  R.drawable.ic_action_pause)
+
+    }
     fun setOnclicks(){
         if(MusicManager.newInstance(this@MusicActivity).getCurrentTrack() != null) {
             btn_back.setOnClickListener({
@@ -90,7 +99,7 @@ class MusicActivity : AppCompatActivity() {
                 btn_pause.visibility = View.VISIBLE
                 btn_play.visibility = View.GONE
                 startService(Intent(this, MusicService::class.java))
-                MusicManager.newInstance(this@MusicActivity).setActive(true)
+               // MusicManager.newInstance(this@MusicActivity).setActive(true)
             })
             btn_pause.setOnClickListener({
                 btn_play.visibility = View.VISIBLE
