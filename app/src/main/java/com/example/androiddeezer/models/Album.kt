@@ -3,35 +3,65 @@ package com.example.androiddeezer.models
 import org.json.JSONObject
 
 class Album {
-    var id: Int? = null
-    var title: String? = null
-    var cover_medium: String? = null
-    var cover_big: String? = null
-    var release_date: String? = null
-    var artist: Artist? = null
-
-    constructor(JObject: JSONObject) {
-        if (JObject.has("id"))
-            this.id = JObject.getInt("id")
-        if (JObject.has("title"))
-            this.title = JObject.getString("title")
-        if (JObject.has("cover_medium"))
-            this.cover_medium = JObject.getString("cover_small")
-        if (JObject.has("cover_big"))
-            this.cover_big = JObject.getString("cover_big")
-        if (JObject.has("release_date"))
-            this.release_date = JObject.getString("release_date")
-        if (JObject.has("artist")) {
-            var artistJSON = JObject.getJSONObject("artist")
-            artist = Artist(artistJSON)
-        }
-    }
+    private var id: Int? = null
+    private var title: String? = null
+    private var cover_small: String? = null
+    private var cover_medium: String? = null
+    private var cover_big: String? = null
+    private var cover: String? = null
+    private var genre_id: Int? = null
+    private var duration: Int? = null
+    private var artist: Artist? = null
+    private var release_date: String? = null
 
     constructor()
 
+    constructor(JObject: JSONObject){
+        if(JObject.has("id"))
+            this.id = JObject.getInt("id")
+        if(JObject.has("title"))
+            this.title = JObject.getString("title")
+        if(JObject.has("cover_small"))
+            this.cover_small = JObject.getString("cover_small")
+        if(JObject.has("cover_medium"))
+            this.cover_medium = JObject.getString("cover_medium")
+        if (JObject.has("cover_big"))
+            this.cover_big = JObject.getString("cover_big")
+        if(JObject.has("cover"))
+            this.cover = JObject.getString("cover")
+        if(JObject.has("duration"))
+            this.duration = JObject.getInt("duration")
+        if(JObject.has("artist")){
+            var artistJSON = JObject.getJSONObject("artist")
+            artist = Artist(artistJSON)
+        }
+        if (JObject.has("release_date"))
+            this.release_date = JObject.getString("release_date")
+    }
 
+    public fun getId(): Int? {
+        return id
+    }
+    public fun getTitle(): String? {
+        return title
+    }
+    public fun getArtistName(): String? {
+        return artist?.getName()
+    }
+    public fun getReleaseDate(): String? {
+        return release_date
+    }
+    public fun getCoverSmall(): String? {
+        return cover_small
+    }
     public fun getCoverMedium(): String? {
         return cover_medium
+    }
+    public fun getCover(): String? {
+        return cover
+    }
+    public fun getCoverBig(): String? {
+        return cover_big
     }
 
     override fun toString(): String {

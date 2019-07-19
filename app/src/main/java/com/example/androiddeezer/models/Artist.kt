@@ -3,10 +3,15 @@ package com.example.androiddeezer.models
 import org.json.JSONObject
 
 class Artist {
-    var name: String? = null
+    private var name: String? = null
 
+    constructor()
     constructor(JObject: JSONObject){
         if(JObject.has("name"))
             name = JObject.getString("name")
+    }
+
+    public fun getName(): String?{
+        return name
     }
 }

@@ -49,9 +49,6 @@ class AlbumAdapter(val context: Context, private val adapterCallbackAlbum: Adapt
         holder.itemView.album_image.alpha = 0f
 
         holder.itemView.album_image.animate().setDuration(1000).alpha(1f).start()
-
-        holder.itemView.album_content.setBackgroundColor(Color.parseColor("#FEF9EF"))
-
         Picasso.get().load(album.cover_medium).into(holder.itemView.album_image)
 
         holder.itemView.setOnClickListener { adapterCallbackAlbum.onClickItem(album)}

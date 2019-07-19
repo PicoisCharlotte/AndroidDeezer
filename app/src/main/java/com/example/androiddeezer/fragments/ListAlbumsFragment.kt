@@ -11,11 +11,15 @@ import com.example.androiddeezer.R
 import com.example.androiddeezer.adapters.AlbumAdapter
 import com.example.androiddeezer.models.Album
 import com.example.androiddeezer.interfaces.AdapterCallbackAlbum
+import com.example.androiddeezer.interfaces.AdapterCallbackAlbum
+import com.example.androiddeezer.managers.MusicManager
 import kotlinx.android.synthetic.main.fragment_list_albums.*
+import kotlinx.android.synthetic.main.music_controller.*
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
+import android.widget.LinearLayout
 
 
 class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
@@ -42,6 +46,18 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
         list_album_view.adapter = albumAdapter
 
         getAlbums(url)
+        setMusicControllerVisibility(MusicManager.newInstance(requireContext()).isActive())
+    }
+
+    fun setMusicControllerVisibility(visible: Boolean){
+        if (visible) {
+            if(music_controller != null) music_controller.visibility = View.VISIBLE
+            //val params = linear_list_album_view.layoutParams as LinearLayout.LayoutParams
+// Changes the height and width to the specified *pixels*
+            //params.bottomMargin = music_controller.height
+            //linear_list_album_view.setLayoutParams(params)
+        } else
+            if(music_controller != null) music_controller.visibility = View.GONE
 
     }
 

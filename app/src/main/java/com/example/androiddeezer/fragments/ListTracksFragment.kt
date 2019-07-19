@@ -2,6 +2,8 @@ package com.example.androiddeezer.fragments
 
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.GradientDrawable
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.graphics.Palette
@@ -12,20 +14,25 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import com.example.androiddeezer.R
+import com.example.androiddeezer.activities.MusicActivity
 import com.example.androiddeezer.adapters.TrackAdapter
+import com.example.androiddeezer.interfaces.AdapterCallbackTrack
+import com.example.androiddeezer.managers.MusicManager
 import com.example.androiddeezer.models.Album
+import com.example.androiddeezer.models.Track
 import com.example.androiddeezer.models.Tracks
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_list_tracks.*
+import kotlinx.android.synthetic.main.music_controller.*
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 
-class ListTracksFragment : Fragment(){
+class ListTracksFragment : Fragment(), AdapterCallbackTrack{
     private val client = OkHttpClient()
 
-    var trackList: MutableList<Tracks> = mutableListOf()
+    var trackList: MutableList<Track> = mutableListOf()
 
     var url = "http://api.deezer.com/2.0/album/$albumId/tracks"
 
@@ -35,14 +42,14 @@ class ListTracksFragment : Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        trackAdapter = TrackAdapter(context!!)
+        trackAdapter = TrackAdapter(context!!, this)
         linearLayoutManager = LinearLayoutManager(context)
 
         return inflater.inflate(R.layout.fragment_list_tracks, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view!!, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         list_track_view.layoutManager = GridLayoutManager(context, 1)
         list_track_view.adapter = trackAdapter
@@ -54,14 +61,27 @@ class ListTracksFragment : Fragment(){
         createGradientFromAlbumCover()
 
         getTracks(url)
+
+        setMusicControllerVisibility(MusicManager.newInstance(requireContext()).isActive())
+    }
+
+    fun setMusicControllerVisibility(visible: Boolean){
+        if(music_controller != null) {
+            if (visible) {
+                music_controller.visibility = View.VISIBLE
+
+
+            } else
+                music_controller.visibility = View.GONE
+        }
     }
 
     companion object {
         var albumId: Int? = null
         var albumCoverBig: String? = null
         fun newInstance(album: Album): ListTracksFragment {
-            albumId = album.id
-            albumCoverBig = album.cover_big
+            albumId = album.getId()
+            albumCoverBig = album.getCoverBig()
 
             return ListTracksFragment()
         }
@@ -83,12 +103,11 @@ class ListTracksFragment : Fragment(){
                         for(i in 0..(datas.length() - 1)) {
                             val track = datas.getJSONObject(i)
 
-                            trackList.add(Tracks(track))
+                            trackList.add(Track(track))
                         }
 
                         activity.runOnUiThread {
                             trackAdapter.setData(trackList)
-
                             trackAdapter.notifyDataSetChanged()
                         }
                     } else {
@@ -96,6 +115,12 @@ class ListTracksFragment : Fragment(){
                             list_empty.visibility = VISIBLE
                         }
                     }
+                        trackAdapter.notifyDataSetChanged()
+                    }
+
+                } catch (e: JSONException) {
+                    activity?.runOnUiThread {
+                        context?.toast(getString(R.string.noTracksFound))
 
                 } catch (e: JSONException) {
                     e.printStackTrace()
@@ -133,5 +158,11 @@ class ListTracksFragment : Fragment(){
 
                 }
             })
+    }
+
+    override fun onClickItem(track: Track) {
+        context?.let { MusicManager.newInstance(it).setCurrentTrack(track) }
+        var intent = Intent(context, MusicActivity::class.java)
+        startActivity(intent)
     }
 }
