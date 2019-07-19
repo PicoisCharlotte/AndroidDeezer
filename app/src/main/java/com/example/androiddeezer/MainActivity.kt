@@ -43,8 +43,6 @@ class MainActivity : AppCompatActivity() {
         val albumFragment = ListAlbumsFragment.newInstance()
         openFragment(albumFragment)
 
-        val button = playFab
-        button.setOnClickListener {onPlay()}
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             notificationManager =

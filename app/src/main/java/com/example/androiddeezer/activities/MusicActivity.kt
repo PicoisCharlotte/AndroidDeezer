@@ -34,10 +34,13 @@ class MusicActivity : AppCompatActivity() {
     private var album = Album()
     private var artist = Artist()
     private val mainAct = MainActivity()
+    private var position: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_music)
+
+        position = MusicManager.newInstance(this@MusicActivity).getPosition()
 
         setOnclicks()
         //mainAct.setMusicControllerVisibility(false)
@@ -98,6 +101,7 @@ class MusicActivity : AppCompatActivity() {
                 stopService(Intent(this, MusicService::class.java))
             })
             btn_next.setOnClickListener({
+                //MusicService.newInstance(this@MusicActivity).nextMusic(position, MusicManager.newInstance(this@MusicActivity).getCurrentTrackList())
             })
         }
         close.setOnClickListener {

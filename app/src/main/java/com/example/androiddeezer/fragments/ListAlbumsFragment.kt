@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.method.TextKeyListener.clear
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,9 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.music_controller.music_controller
 
 
 class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
@@ -42,7 +46,7 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        list_album_view.layoutManager = GridLayoutManager(context, 1)
+        list_album_view.layoutManager = GridLayoutManager(context, 1) as RecyclerView.LayoutManager?
         list_album_view.adapter = albumAdapter
 
         getAlbums(url)
@@ -52,13 +56,8 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
     fun setMusicControllerVisibility(visible: Boolean){
         if (visible) {
             if(music_controller != null) music_controller.visibility = View.VISIBLE
-            //val params = linear_list_album_view.layoutParams as LinearLayout.LayoutParams
-// Changes the height and width to the specified *pixels*
-            //params.bottomMargin = music_controller.height
-            //linear_list_album_view.setLayoutParams(params)
         } else
             if(music_controller != null) music_controller.visibility = View.GONE
-
     }
 
     companion object {

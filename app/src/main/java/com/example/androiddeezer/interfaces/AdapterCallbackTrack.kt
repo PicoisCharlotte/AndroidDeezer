@@ -4,5 +4,5 @@ import com.example.androiddeezer.models.Track
 
 interface AdapterCallbackTrack {
 
-    fun onClickItem(track: Track)
+    fun onClickItem(track: Track, trackList: List<Track>, position: Int)
 }

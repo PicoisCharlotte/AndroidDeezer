@@ -48,7 +48,7 @@ class TrackAdapter(val context: Context, private val adapterCallbackTrack: Adapt
     override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
         val track = trackList[p1]
 
-        p0.itemView.setOnClickListener{adapterCallbackTrack.onClickItem(track)}
+        p0.itemView.setOnClickListener{adapterCallbackTrack.onClickItem(track, trackList, p1)}
 
         p0.itemView.track_title?.text = track.getTitleTrack()
         p0.itemView.track_artist?.text = track.getArtist().getName()
