@@ -23,6 +23,7 @@ import org.json.JSONObject
 import java.io.IOException
 import java.net.URL
 import android.content.Intent
+import android.widget.Button
 import com.bumptech.glide.GenericTransitionOptions
 import com.example.androiddeezer.managers.MusicManager
 import com.example.androiddeezer.services.MusicService
@@ -46,6 +47,9 @@ class MusicActivity : AppCompatActivity() {
         setOnclicks()
         //mainAct.setMusicControllerVisibility(false)
         getMusic()
+
+        val button = findViewById<Button>(R.id.playFab)
+        button.setOnClickListener {onPlay()}
     }
 
     fun getMusic(){
@@ -85,6 +89,10 @@ class MusicActivity : AppCompatActivity() {
 
             }
         })
+
+    }
+    private fun onPlay(){
+        NotificationGenerator.launchNotif(applicationContext, "Titre",  R.drawable.ic_action_pause)
 
     }
     fun setOnclicks(){
