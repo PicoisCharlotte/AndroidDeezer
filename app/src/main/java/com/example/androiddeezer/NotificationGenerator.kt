@@ -1,10 +1,12 @@
 package com.example.androiddeezer
 
 import android.app.Notification
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
@@ -19,6 +21,46 @@ object NotificationGenerator {
     val NOTIFY_NEXT = "com.example.androiddeezer.next"
 
     private val NOTIFICATION_ID_CUSTOM_BIG = 9
+    private var notificationManager: NotificationManager? = null
+
+
+    fun launchNotifManager(context: Context){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            notificationManager =
+                context.getSystemService(
+                    Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            createNotificationChannel(
+                "com.example.androiddeezer.player",
+                "Player",
+                "Player Android Deezer")
+         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel(id: String, name: String,
+                                          description: String) {
+
+        val importance = NotificationManager.IMPORTANCE_LOW
+        val channel = NotificationChannel(id, name, importance)
+
+        channel.description = description
+        channel.enableLights(true)
+        channel.lightColor = Color.RED
+        channel.enableVibration(true)
+        channel.vibrationPattern =
+            longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
+        notificationManager?.createNotificationChannel(channel)
+    }
+
+    fun launchNotif(context: Context, titre: String, album_art: Int){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            newNotif(notificationManager, context, titre,  album_art)
+        } else
+            customBigNotification(context, titre,  R.drawable.ic_action_pause)
+    }
 
     fun customBigNotification(context: Context, titre: String, album_art: Int) {
         val expandedView = RemoteViews(context.packageName, R.layout.big_notification)
@@ -47,16 +89,24 @@ object NotificationGenerator {
 
         val notificationID = 101
 
-        Log.i("Axel", "lol")
         val channelID = "com.example.androiddeezer.player"
+        val expandedView = RemoteViews(context.packageName, R.layout.big_notification)
+        expandedView.setTextViewText(R.id.textSongName, titre)
+        expandedView.setImageViewResource(R.id.album_art, album_art)
+        val notifyIntent = Intent(context, MainActivity::class.java)
+
+        notifyIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        val pendingIntent = PendingIntent.getActivity(context, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notification = Notification.Builder(context,
             channelID)
-            .setContentTitle("Example Notification")
-            .setContentText("This is an  example notification.")
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setSmallIcon(R.drawable.ic_action_play)
             .setChannelId(channelID)
+            .setCustomBigContentView(expandedView)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
             .build()
+
 
         notificationManager?.notify(notificationID, notification)
     }
