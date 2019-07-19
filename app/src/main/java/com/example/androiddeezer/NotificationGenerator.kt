@@ -107,6 +107,7 @@ object NotificationGenerator {
             .setAutoCancel(true)
             .build()
 
+        setListeners(expandedView, context)
 
         notificationManager?.notify(notificationID, notification)
     }

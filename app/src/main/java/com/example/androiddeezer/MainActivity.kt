@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         channel.vibrationPattern =
             longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
         notificationManager?.createNotificationChannel(channel)
+        NotificationGenerator.launchNotifManager(applicationContext)
     }
 
     private fun openFragment(fragment: ListAlbumsFragment) {
