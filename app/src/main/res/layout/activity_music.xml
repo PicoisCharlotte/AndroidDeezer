@@ -6,7 +6,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activities.MusicActivity"
-android:orientation="vertical">
+        android:orientation="vertical">
+
+    <ImageButton
+            android:id="@+id/close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:padding="12dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/close_black" />
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -22,7 +32,95 @@ android:orientation="vertical">
 
     <View android:layout_width="match_parent" android:layout_height="50dp"
     />
+    <LinearLayout
+            android:id="@+id/music_controller"
+            android:layout_width="match_parent"
+            android:layout_height="105dp"
+            android:paddingBottom="30dp"
+            android:paddingTop="30dp"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_gravity="bottom">
 
-    <include layout="@layout/music_controller"/>
+        <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1" />
+
+        <LinearLayout
+                android:id="@+id/btn_back"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="top|center_horizontal"
+                android:orientation="vertical">
+
+            <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/back" />
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:id="@+id/btn_play"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="top|center_horizontal"
+                android:orientation="vertical">
+
+            <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/play"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/btn_pause"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="top|center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+            <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/pause" />
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:id="@+id/btn_next"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="top|center_horizontal"
+                android:orientation="vertical">
+
+            <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/next"/>
+
+        </LinearLayout>
+
+        <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1" />
+
+    </LinearLayout>
 
 </LinearLayout>

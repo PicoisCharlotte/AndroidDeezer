@@ -25,32 +25,11 @@ class MusicManager(context: Context) {
         }
     }
 
-    public fun play(){
-        try {
-            settings?.edit()?.putBoolean("isActive", true)
-            val previewUri: Uri = Uri.parse(getCurrentTrack().getPreview())
-            mediaPlayer.setDataSource(context, previewUri)
-            mediaPlayer.prepare()
-            mediaPlayer.start()
-        } catch (e: Exception) {
-            Toast.makeText(context, "The file does not exist", Toast.LENGTH_LONG).show()
-        }
-    }
-    public fun stop(){
-        settings?.edit()?.putBoolean("isActive", false)
-    }
-    public fun pause(){
-        mediaPlayer.pause()
-    }
-    public fun next(position: Int){
-
-    }
-    public fun previous(position: Int){
-
-    }
-
     public fun isActive(): Boolean{
         return settings!!.getBoolean("isActive", false)
+    }
+    public fun setActive(isActive: Boolean){
+        settings!!.edit().putBoolean("isActive", false)
     }
 
     public fun getCurrentTrack(): Track{

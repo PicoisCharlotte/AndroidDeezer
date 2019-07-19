@@ -20,6 +20,7 @@ import com.example.androiddeezer.models.Track
 import com.example.androiddeezer.models.Tracks
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_list_tracks.*
+import kotlinx.android.synthetic.main.music_controller.*
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -55,6 +56,19 @@ class ListTracksFragment : Fragment(), AdapterCallbackTrack{
         Picasso.get().load(albumCoverBig).into(album_img)
 
         getTracks(url)
+
+        setMusicControllerVisibility(MusicManager.newInstance(requireContext()).isActive())
+    }
+
+    fun setMusicControllerVisibility(visible: Boolean){
+        if(music_controller != null) {
+            if (visible) {
+                music_controller.visibility = View.VISIBLE
+
+
+            } else
+                music_controller.visibility = View.GONE
+        }
     }
 
     companion object {

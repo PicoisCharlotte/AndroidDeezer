@@ -16,7 +16,6 @@ import com.example.androiddeezer.models.Album
 import com.example.androiddeezer.models.Artist
 import com.example.androiddeezer.models.Track
 import kotlinx.android.synthetic.main.activity_music.*
-import kotlinx.android.synthetic.main.music_controller.*
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONException
@@ -86,12 +85,12 @@ class MusicActivity : AppCompatActivity() {
     fun setOnclicks(){
         if(MusicManager.newInstance(this@MusicActivity).getCurrentTrack() != null) {
             btn_back.setOnClickListener({
-                MusicManager.newInstance(this).previous(0)
             })
             btn_play.setOnClickListener({
                 btn_pause.visibility = View.VISIBLE
                 btn_play.visibility = View.GONE
                 startService(Intent(this, MusicService::class.java))
+                MusicManager.newInstance(this@MusicActivity).setActive(true)
             })
             btn_pause.setOnClickListener({
                 btn_play.visibility = View.VISIBLE
@@ -99,8 +98,10 @@ class MusicActivity : AppCompatActivity() {
                 stopService(Intent(this, MusicService::class.java))
             })
             btn_next.setOnClickListener({
-                MusicManager.newInstance(this).next(0)
             })
+        }
+        close.setOnClickListener {
+            finish()
         }
     }
 }

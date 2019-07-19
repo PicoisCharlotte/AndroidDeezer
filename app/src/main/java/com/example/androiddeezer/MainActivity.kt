@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -22,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
 
     private var mediaPlayer = MediaPlayer()
-    public var isActive = false
     public lateinit var currentTrack: Track
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,26 +40,26 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
     }
     fun activateMusic(){
-        setOnclicks()
+        setOnClicks()
     }
 
     override fun onResume() {
         super.onResume()
 
-        setMusicControllerVisibility(isActive)
+        setMusicControllerVisibility(MusicManager.newInstance(this@MainActivity).isActive())
     }
 
     fun setMusicControllerVisibility(visible: Boolean){
-        if(visible)
-            music_controller.visibility = VISIBLE
-        else
-            music_controller.visibility = GONE
+        if(music_controller != null){
+            if (visible)
+                music_controller.visibility = VISIBLE
+            else
+                music_controller.visibility = GONE
+        }
     }
 
-    fun setOnclicks(){
-        if(currentTrack != null) {
+    fun setOnClicks(){
             btn_back.setOnClickListener({
-                MusicManager.newInstance(this).previous(0)
             })
             btn_play.setOnClickListener({
                 btn_pause.visibility = View.VISIBLE
@@ -72,9 +72,7 @@ class MainActivity : AppCompatActivity() {
                 stopService(Intent(this, MusicService::class.java))
             })
             btn_next.setOnClickListener({
-                MusicManager.newInstance(this).next(0)
             })
-        }
     }
 
 
