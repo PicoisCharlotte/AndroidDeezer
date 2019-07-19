@@ -1,10 +1,14 @@
 package com.example.androiddeezer
 
+import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
+import android.util.Log
 import android.widget.RemoteViews
 
 object NotificationGenerator {
@@ -32,12 +36,29 @@ object NotificationGenerator {
         expandedView.setTextViewText(R.id.textSongName, titre)
         expandedView.setImageViewResource(R.id.album_art, album_art)
         nc.setCustomBigContentView(expandedView)
-        nc.setContentTitle("Music Player")
-        nc.setContentText("Control Audio")
 
         setListeners(expandedView, context)
 
         nm.notify(NOTIFICATION_ID_CUSTOM_BIG, nc.build())
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun newNotif(notificationManager: NotificationManager?, context: Context, titre: String, album_art: Int){
+
+        val notificationID = 101
+
+        Log.i("Axel", "lol")
+        val channelID = "com.example.androiddeezer.player"
+
+        val notification = Notification.Builder(context,
+            channelID)
+            .setContentTitle("Example Notification")
+            .setContentText("This is an  example notification.")
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setChannelId(channelID)
+            .build()
+
+        notificationManager?.notify(notificationID, notification)
     }
 
     private fun setListeners(view: RemoteViews, context: Context) {
