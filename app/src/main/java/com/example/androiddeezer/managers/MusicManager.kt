@@ -14,8 +14,6 @@ import java.util.HashMap
 class MusicManager(context: Context) {
 
     val gson = Gson()
-
-    private var mediaPlayer = MediaPlayer()
     private var context:Context = context
     private var settings: SharedPreferences? = context.getSharedPreferences("DeezerApp", 0)
 
@@ -46,12 +44,10 @@ class MusicManager(context: Context) {
         val jsonTrackList = settings?.getString("currentTrackList", "")
         val trackType = object : TypeToken<List<Track>>() {}.type
         val trackList = Gson().fromJson<List<Track>>(jsonTrackList, trackType)
-
         return trackList
     }
     public fun setCurrentTrackList(trackList: List<Track>){
         val trackListJson = gson.toJson(trackList)
-
         settings?.edit()?.putString("currentTrackList", trackListJson)?.apply()
     }
 

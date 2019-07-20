@@ -46,6 +46,7 @@ class MusicActivity : AppCompatActivity() {
         setOnclicks()
         //mainAct.setMusicControllerVisibility(false)
         getMusic()
+
     }
 
     fun getMusic(){
@@ -77,6 +78,8 @@ class MusicActivity : AppCompatActivity() {
                                 .load(album.getCoverMedium())
                                 .transition(GenericTransitionOptions.with(R.anim.fade_in))
                                 .into(image_album)
+
+                            title_track.text = track.getTitleTrack()
                         })
                     }
                 } catch (e: JSONException) {
