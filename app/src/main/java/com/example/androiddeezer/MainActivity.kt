@@ -2,32 +2,22 @@ package com.example.androiddeezer
 
 import android.content.Intent
 import android.media.MediaPlayer
-import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.Toast
-import com.example.androiddeezer.activities.MusicActivity
 import com.example.androiddeezer.managers.MusicManager
 import com.example.androiddeezer.models.Track
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.music_controller.*
-import kotlinx.android.synthetic.main.music_controller.music_controller
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.support.annotation.RequiresApi
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import com.example.androiddeezer.fragments.ListAlbumsFragment
 import com.example.androiddeezer.services.MusicService
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private var notificationManager: NotificationManager? = null
@@ -54,6 +44,8 @@ class MainActivity : AppCompatActivity() {
                 "Player",
                 "Player Android Deezer")
          }
+
+        setOnClicks()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -78,9 +70,6 @@ class MainActivity : AppCompatActivity() {
         //transaction.addToBackStack(null)
         transaction.commit()
     }
-    fun activateMusic(){
-        setOnClicks()
-    }
 
     override fun onResume() {
         super.onResume()
@@ -98,12 +87,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setOnClicks(){
+        if(MusicManager.newInstance(this@MainActivity).getCurrentTrack() != null) {
             btn_back.setOnClickListener({
+                MusicService.newInstance().previousMusic(MusicManager.newInstance(this@MainActivity).getPosition(), MusicManager.newInstance(this@MainActivity).getCurrentTrackList(), this@MainActivity)
+                stopService(Intent(this, MusicService::class.java))
+                btn_pause.visibility = View.VISIBLE
+                btn_play.visibility = View.GONE
+                val intent = Intent(this@MainActivity, MusicService::class.java)
+                intent.putExtra("preview", MusicManager.newInstance(this@MainActivity).getCurrentTrack().getPreview())
+                startService(intent)
             })
             btn_play.setOnClickListener({
                 btn_pause.visibility = View.VISIBLE
                 btn_play.visibility = View.GONE
-                startService(Intent(this, MusicService::class.java))
+                val intent = Intent(this@MainActivity, MusicService::class.java)
+                intent.putExtra("preview", MusicManager.newInstance(this@MainActivity).getCurrentTrack().getPreview())
+                startService(intent)
+                MusicManager.newInstance(this@MainActivity).setActive(true)
             })
             btn_pause.setOnClickListener({
                 btn_play.visibility = View.VISIBLE
@@ -111,7 +111,15 @@ class MainActivity : AppCompatActivity() {
                 stopService(Intent(this, MusicService::class.java))
             })
             btn_next.setOnClickListener({
+                MusicService.newInstance().nextMusic(MusicManager.newInstance(this@MainActivity).getPosition(), MusicManager.newInstance(this@MainActivity).getCurrentTrackList(), this@MainActivity)
+                stopService(Intent(this, MusicService::class.java))
+                btn_pause.visibility = View.VISIBLE
+                btn_play.visibility = View.GONE
+                val intent = Intent(this@MainActivity, MusicService::class.java)
+                intent.putExtra("preview", MusicManager.newInstance(this@MainActivity).getCurrentTrack().getPreview())
+                startService(intent)
             })
+        }
     }
 
     private fun onPlay(){

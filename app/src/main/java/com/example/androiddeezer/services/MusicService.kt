@@ -15,13 +15,13 @@ import com.example.androiddeezer.models.Track
 
 public class MusicService : Service() {
     var mediaPlayer: MediaPlayer? = null
+
     override fun onBind(intent: Intent?): IBinder? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-
     companion object {
-        fun newInstance(contextInstance: Context): MusicService {
+        fun newInstance(): MusicService {
             return MusicService()
         }
     }
@@ -35,7 +35,8 @@ public class MusicService : Service() {
     }
 
     override fun onStart(intent: Intent, startid: Int) {
-        val previewUri: Uri = Uri.parse(MusicManager.newInstance(this@MusicService).getCurrentTrack().getPreview())
+        var preview = intent.getStringExtra("preview")
+        val previewUri: Uri = Uri.parse(preview)
         mediaPlayer?.setDataSource(this@MusicService, previewUri)
         mediaPlayer?.prepare()
         mediaPlayer?.start()
@@ -46,27 +47,25 @@ public class MusicService : Service() {
         mediaPlayer?.stop()
     }
 
-    public fun startMusic(track: Track){
-        val previewUri: Uri = Uri.parse(track.getPreview())
-        mediaPlayer?.setDataSource(this@MusicService, previewUri)
-        mediaPlayer?.prepare()
-        mediaPlayer?.start()
+    public fun nextMusic(position: Int, listTracks: List<Track>, context: Context){
+        if(position + 1 < listTracks.size) {
+            MusicManager.newInstance(context).setCurrentTrack(listTracks.get(position + 1))
+            MusicManager.newInstance(context).setPosition(position + 1)
+        } else {
+            MusicManager.newInstance(context).setCurrentTrack(listTracks.get(0))
+            MusicManager.newInstance(context).setPosition(0)
+        }
     }
 
-    public fun nextMusic(position: Int, listTracks: List<Track>){
-        if(position < listTracks.size)
-            startMusic(listTracks.get(position + 1))
-        else
-            startMusic(listTracks.get(0))
+    public fun previousMusic(position: Int, listTracks: List<Track>, context: Context){
+        if(position == 0){
+            MusicManager.newInstance(context).setCurrentTrack(listTracks.get(listTracks.size - 1))
+            MusicManager.newInstance(context).setPosition(listTracks.size - 1)
+        } else {
+            MusicManager.newInstance(context).setCurrentTrack(listTracks.get(position - 1))
+            MusicManager.newInstance(context).setPosition(position - 1)
+        }
     }
-
-    public fun previousMusic(position: Int, listTracks: List<Track>){
-        if(position > 0)
-            startMusic(listTracks.get(position - 1))
-        else
-            startMusic(listTracks.get(listTracks.size))
-    }
-
 
 
 }

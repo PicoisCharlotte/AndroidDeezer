@@ -47,7 +47,6 @@
                     android:src="@drawable/back" />
         </LinearLayout>
 
-
         <LinearLayout
                 android:id="@+id/btn_play"
                 android:layout_width="0dp"

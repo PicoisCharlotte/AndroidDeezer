@@ -88,11 +88,20 @@ class MusicActivity : AppCompatActivity() {
     fun setOnclicks(){
         if(MusicManager.newInstance(this@MusicActivity).getCurrentTrack() != null) {
             btn_back.setOnClickListener({
+                MusicService.newInstance().previousMusic(MusicManager.newInstance(this@MusicActivity).getPosition(), MusicManager.newInstance(this@MusicActivity).getCurrentTrackList(), this@MusicActivity)
+                stopService(Intent(this, MusicService::class.java))
+                btn_pause.visibility = View.VISIBLE
+                btn_play.visibility = View.GONE
+                val intent = Intent(this@MusicActivity, MusicService::class.java)
+                intent.putExtra("preview", MusicManager.newInstance(this@MusicActivity).getCurrentTrack().getPreview())
+                startService(intent)
             })
             btn_play.setOnClickListener({
                 btn_pause.visibility = View.VISIBLE
                 btn_play.visibility = View.GONE
-                startService(Intent(this, MusicService::class.java))
+                val intent = Intent(this@MusicActivity, MusicService::class.java)
+                intent.putExtra("preview", MusicManager.newInstance(this@MusicActivity).getCurrentTrack().getPreview())
+                startService(intent)
                 MusicManager.newInstance(this@MusicActivity).setActive(true)
             })
             btn_pause.setOnClickListener({
@@ -101,7 +110,13 @@ class MusicActivity : AppCompatActivity() {
                 stopService(Intent(this, MusicService::class.java))
             })
             btn_next.setOnClickListener({
-                //MusicService.newInstance(this@MusicActivity).nextMusic(position, MusicManager.newInstance(this@MusicActivity).getCurrentTrackList())
+                MusicService.newInstance().nextMusic(MusicManager.newInstance(this@MusicActivity).getPosition(), MusicManager.newInstance(this@MusicActivity).getCurrentTrackList(), this@MusicActivity)
+                stopService(Intent(this, MusicService::class.java))
+                btn_pause.visibility = View.VISIBLE
+                btn_play.visibility = View.GONE
+                val intent = Intent(this@MusicActivity, MusicService::class.java)
+                intent.putExtra("preview", MusicManager.newInstance(this@MusicActivity).getCurrentTrack().getPreview())
+                startService(intent)
             })
         }
         close.setOnClickListener {

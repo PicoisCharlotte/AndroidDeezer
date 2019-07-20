@@ -8,8 +8,8 @@ import android.widget.Toast
 import com.example.androiddeezer.models.Track
 import org.json.JSONObject
 import com.google.gson.Gson
-
-
+import com.google.gson.reflect.TypeToken
+import java.util.HashMap
 
 class MusicManager(context: Context) {
 
@@ -18,8 +18,6 @@ class MusicManager(context: Context) {
     private var mediaPlayer = MediaPlayer()
     private var context:Context = context
     private var settings: SharedPreferences? = context.getSharedPreferences("DeezerApp", 0)
-    private lateinit var trackList: List<Track>
-    private var position = 0
 
     companion object {
         fun newInstance(contextInstance: Context): MusicManager {
@@ -31,7 +29,7 @@ class MusicManager(context: Context) {
         return settings!!.getBoolean("isActive", false)
     }
     public fun setActive(isActive: Boolean){
-        settings!!.edit().putBoolean("isActive", false)
+        settings?.edit()?.putBoolean("isActive", false)
     }
 
     public fun getCurrentTrack(): Track{
@@ -45,16 +43,22 @@ class MusicManager(context: Context) {
     }
 
     public fun getCurrentTrackList(): List<Track>{
+        val jsonTrackList = settings?.getString("currentTrackList", "")
+        val trackType = object : TypeToken<List<Track>>() {}.type
+        val trackList = Gson().fromJson<List<Track>>(jsonTrackList, trackType)
+
         return trackList
     }
     public fun setCurrentTrackList(trackList: List<Track>){
-        this.trackList = trackList
+        val trackListJson = gson.toJson(trackList)
+
+        settings?.edit()?.putString("currentTrackList", trackListJson)?.apply()
     }
 
     public fun getPosition(): Int{
-        return position
+        return settings!!.getInt("position", 0)
     }
     public fun setPosition(position: Int){
-        this.position = position
+        settings?.edit()?.putInt("position", position)?.apply()
     }
 }
