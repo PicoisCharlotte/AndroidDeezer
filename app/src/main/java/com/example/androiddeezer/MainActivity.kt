@@ -89,7 +89,8 @@ class MainActivity : AppCompatActivity() {
     fun setOnClicks(){
         if(MusicManager.newInstance(this@MainActivity).getCurrentTrack() != null) {
             btn_back.setOnClickListener({
-                MusicService.newInstance().previousMusic(MusicManager.newInstance(this@MainActivity).getPosition(), MusicManager.newInstance(this@MainActivity).getCurrentTrackList(), this@MainActivity)
+                MusicService.newInstance().previousMusic(MusicManager.newInstance(this@MainActivity).getPosition(),
+                    MusicManager.newInstance(this@MainActivity).getCurrentTrackList(), this@MainActivity)
                 stopService(Intent(this, MusicService::class.java))
                 btn_pause.visibility = View.VISIBLE
                 btn_play.visibility = View.GONE
@@ -111,7 +112,8 @@ class MainActivity : AppCompatActivity() {
                 stopService(Intent(this, MusicService::class.java))
             })
             btn_next.setOnClickListener({
-                MusicService.newInstance().nextMusic(MusicManager.newInstance(this@MainActivity).getPosition(), MusicManager.newInstance(this@MainActivity).getCurrentTrackList(), this@MainActivity)
+                MusicService.newInstance().nextMusic(MusicManager.newInstance(this@MainActivity).getPosition(),
+                    MusicManager.newInstance(this@MainActivity).getCurrentTrackList(), this@MainActivity)
                 stopService(Intent(this, MusicService::class.java))
                 btn_pause.visibility = View.VISIBLE
                 btn_play.visibility = View.GONE

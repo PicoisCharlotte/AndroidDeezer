@@ -23,6 +23,7 @@ import org.json.JSONObject
 import java.io.IOException
 import java.net.URL
 import android.content.Intent
+import com.bumptech.glide.GenericTransitionOptions
 import com.example.androiddeezer.managers.MusicManager
 import com.example.androiddeezer.services.MusicService
 
@@ -74,6 +75,7 @@ class MusicActivity : AppCompatActivity() {
                         this@MusicActivity.runOnUiThread(java.lang.Runnable {
                             Glide.with(this@MusicActivity)
                                 .load(album.getCoverMedium())
+                                .transition(GenericTransitionOptions.with(R.anim.fade_in))
                                 .into(image_album)
                         })
                     }
