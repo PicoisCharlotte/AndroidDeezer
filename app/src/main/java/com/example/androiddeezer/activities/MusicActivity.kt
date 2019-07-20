@@ -25,6 +25,7 @@ import java.net.URL
 import android.content.Intent
 import android.widget.Button
 import com.bumptech.glide.GenericTransitionOptions
+import com.example.androiddeezer.NotificationGenerator
 import com.example.androiddeezer.managers.MusicManager
 import com.example.androiddeezer.services.MusicService
 
@@ -48,8 +49,9 @@ class MusicActivity : AppCompatActivity() {
         //mainAct.setMusicControllerVisibility(false)
         getMusic()
 
-        val button = findViewById<Button>(R.id.playFab)
-        button.setOnClickListener {onPlay()}
+
+        //val button = findViewById<Button>(R.id.playFab)
+        //btn_play.setOnClickListener { NotificationGenerator.launchNotif(applicationContext, "Titre",  R.drawable.ic_action_pause) }
     }
 
     fun getMusic(){
@@ -91,10 +93,6 @@ class MusicActivity : AppCompatActivity() {
         })
 
     }
-    private fun onPlay(){
-        NotificationGenerator.launchNotif(applicationContext, "Titre",  R.drawable.ic_action_pause)
-
-    }
     fun setOnclicks(){
         if(MusicManager.newInstance(this@MusicActivity).getCurrentTrack() != null) {
             btn_back.setOnClickListener({
@@ -109,6 +107,8 @@ class MusicActivity : AppCompatActivity() {
             btn_play.setOnClickListener({
                 btn_pause.visibility = View.VISIBLE
                 btn_play.visibility = View.GONE
+                stopService(Intent(this, MusicService::class.java))
+                NotificationGenerator.launchNotif(applicationContext, "Titre",  R.drawable.ic_action_pause)
                 val intent = Intent(this@MusicActivity, MusicService::class.java)
                 intent.putExtra("preview", MusicManager.newInstance(this@MusicActivity).getCurrentTrack().getPreview())
                 startService(intent)

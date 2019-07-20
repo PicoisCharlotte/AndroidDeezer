@@ -20,6 +20,7 @@ object NotificationGenerator {
     val NOTIFY_PLAY = "com.example.androiddeezer.play"
     val NOTIFY_NEXT = "com.example.androiddeezer.next"
 
+
     private val NOTIFICATION_ID_CUSTOM_BIG = 9
     private var notificationManager: NotificationManager? = null
 
@@ -39,7 +40,7 @@ object NotificationGenerator {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel(id: String, name: String,
+    fun createNotificationChannel(id: String, name: String,
                                           description: String) {
 
         val importance = NotificationManager.IMPORTANCE_LOW
@@ -75,8 +76,8 @@ object NotificationGenerator {
         nc.setSmallIcon(R.drawable.ic_action_play)
         nc.setAutoCancel(true)
 
-        expandedView.setTextViewText(R.id.textSongName, titre)
-        expandedView.setImageViewResource(R.id.album_art, album_art)
+        expandedView.setTextViewText(R.id.title_track_notif, titre)
+        expandedView.setImageViewResource(R.id.album_art_notif, album_art)
         nc.setCustomBigContentView(expandedView)
 
         setListeners(expandedView, context)
@@ -91,8 +92,8 @@ object NotificationGenerator {
 
         val channelID = "com.example.androiddeezer.player"
         val expandedView = RemoteViews(context.packageName, R.layout.big_notification)
-        expandedView.setTextViewText(R.id.textSongName, titre)
-        expandedView.setImageViewResource(R.id.album_art, album_art)
+        expandedView.setTextViewText(R.id.title_track_notif, titre)
+        expandedView.setImageViewResource(R.id.album_art_notif, album_art)
         val notifyIntent = Intent(context, MainActivity::class.java)
 
         notifyIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -120,23 +121,24 @@ object NotificationGenerator {
         val play = Intent(NOTIFY_PLAY)
 
         val pPrevious = PendingIntent.getBroadcast(context, 0, previous, PendingIntent.FLAG_UPDATE_CURRENT)
-        view.setOnClickPendingIntent(R.id.btnPrevious, pPrevious)
+        view.setOnClickPendingIntent(R.id.btn_previous_notif, pPrevious)
 
 
         val pDelete = PendingIntent.getBroadcast(context, 0, delete, PendingIntent.FLAG_UPDATE_CURRENT)
-        view.setOnClickPendingIntent(R.id.btnDelete, pDelete)
+        view.setOnClickPendingIntent(R.id.btn_delete_notif, pDelete)
 
 
         val pPause = PendingIntent.getBroadcast(context, 0, pause, PendingIntent.FLAG_UPDATE_CURRENT)
-        view.setOnClickPendingIntent(R.id.btnPause, pPause)
+        view.setOnClickPendingIntent(R.id.btn_pause_notif, pPause)
 
 
         val pNext = PendingIntent.getBroadcast(context, 0, next, PendingIntent.FLAG_UPDATE_CURRENT)
-        view.setOnClickPendingIntent(R.id.btnNext, pNext)
+        view.setOnClickPendingIntent(R.id.btn_next_notif, pNext)
 
 
         val pPlay = PendingIntent.getBroadcast(context, 0, play, PendingIntent.FLAG_UPDATE_CURRENT)
-        view.setOnClickPendingIntent(R.id.btnPlay, pPlay)
+        view.setOnClickPendingIntent(R.id.btn_play_notif, pPlay)
+
 
     }
 

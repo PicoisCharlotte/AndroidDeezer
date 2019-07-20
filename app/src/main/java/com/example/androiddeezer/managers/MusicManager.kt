@@ -29,7 +29,7 @@ class MusicManager(context: Context) {
         return settings!!.getBoolean("isActive", false)
     }
     public fun setActive(isActive: Boolean){
-        settings?.edit()?.putBoolean("isActive", false)
+        settings?.edit()?.putBoolean("isActive", isActive)?.apply()
     }
 
     public fun getCurrentTrack(): Track{

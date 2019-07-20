@@ -9,6 +9,8 @@ class NotificationBroadcast : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
+        Toast.makeText(context, "Broadcast Received", Toast.LENGTH_LONG).show()
+
         if (intent.action == NotificationGenerator.NOTIFY_PLAY) {
             Toast.makeText(context, "NOTIFY_PLAY", Toast.LENGTH_LONG).show()
         } else if (intent.action == NotificationGenerator.NOTIFY_PAUSE) {

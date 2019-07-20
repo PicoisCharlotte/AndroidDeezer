@@ -33,37 +33,22 @@ class MainActivity : AppCompatActivity() {
         val albumFragment = ListAlbumsFragment.newInstance()
         openFragment(albumFragment)
 
-        btn_play.setOnClickListener {onPlay()}
+        //btn_play.setOnClickListener {onPlay()}
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             notificationManager =
                 getSystemService(
                     Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            createNotificationChannel(
-                "com.example.androiddezer.player",
+            NotificationGenerator.createNotificationChannel("com.example.androiddezer.player",
                 "Player",
                 "Player Android Deezer")
-         }
+
+            NotificationGenerator.launchNotifManager(applicationContext)
+
+        }
 
         setOnClicks()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel(id: String, name: String,
-                                          description: String) {
-
-        val importance = NotificationManager.IMPORTANCE_LOW
-        val channel = NotificationChannel(id, name, importance)
-
-        channel.description = description
-        channel.enableLights(true)
-        channel.lightColor = Color.RED
-        channel.enableVibration(true)
-        channel.vibrationPattern =
-            longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
-        notificationManager?.createNotificationChannel(channel)
-        NotificationGenerator.launchNotifManager(applicationContext)
     }
 
     private fun openFragment(fragment: ListAlbumsFragment) {
@@ -103,6 +88,7 @@ class MainActivity : AppCompatActivity() {
             btn_play.setOnClickListener({
                 btn_pause.visibility = View.VISIBLE
                 btn_play.visibility = View.GONE
+                stopService(Intent(this, MusicService::class.java))
                 val intent = Intent(this@MainActivity, MusicService::class.java)
                 intent.putExtra("preview", MusicManager.newInstance(this@MainActivity).getCurrentTrack().getPreview())
                 startService(intent)
