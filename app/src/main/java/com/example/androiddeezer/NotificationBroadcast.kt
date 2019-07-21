@@ -13,8 +13,6 @@ class NotificationBroadcast : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
-//        Toast.makeText(context, "Broadcast Received", Toast.LENGTH_LONG).show()
-
         if (intent.action == NotificationGenerator.NOTIFY_PLAY) {
             context.stopService(Intent(context, MusicService::class.java))
             val intent = Intent(context, MusicService::class.java)
@@ -24,8 +22,7 @@ class NotificationBroadcast : BroadcastReceiver() {
             Toast.makeText(context, "NOTIFY_PLAY", Toast.LENGTH_LONG).show()
 
         } else if (intent.action == NotificationGenerator.NOTIFY_PAUSE) {
-            val mainActivity = context as MainActivity
-            mainActivity.stopService(Intent(mainActivity, MusicService::class.java))
+            context.stopService(Intent(context, MusicService::class.java))
             Toast.makeText(context, "NOTIFY_PAUSE", Toast.LENGTH_LONG).show()
 
         } else if (intent.action == NotificationGenerator.NOTIFY_NEXT) {

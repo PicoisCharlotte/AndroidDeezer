@@ -108,7 +108,7 @@ class MusicActivity : AppCompatActivity() {
                 btn_pause.visibility = View.VISIBLE
                 btn_play.visibility = View.GONE
                 stopService(Intent(this, MusicService::class.java))
-                NotificationGenerator.launchNotif(applicationContext, "Titre",  R.drawable.ic_action_pause)
+                NotificationGenerator.launchNotif(applicationContext, track.getTitleTrack()!!,  R.drawable.ic_action_pause)
                 val intent = Intent(this@MusicActivity, MusicService::class.java)
                 intent.putExtra("preview", MusicManager.newInstance(this@MusicActivity).getCurrentTrack().getPreview())
                 startService(intent)

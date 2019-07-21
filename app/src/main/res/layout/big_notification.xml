@@ -78,8 +78,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_margin="5dp"
-                    android:background="@drawable/ic_action_play"
-                    android:visibility="gone"/>
+                    android:background="@drawable/ic_action_play"/>
 
                 <Button
                         android:id="@+id/btn_next_notif"

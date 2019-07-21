@@ -11,6 +11,8 @@ import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.RemoteViews
 import com.example.androiddeezer.services.MusicService
 
@@ -25,7 +27,6 @@ object NotificationGenerator {
     val pPlay: PendingIntent? = null
     val pNext: PendingIntent? = null
     val pPrevious: PendingIntent? = null
-
 
     private val NOTIFICATION_ID_CUSTOM_BIG = 9
     private var notificationManager: NotificationManager? = null
@@ -42,12 +43,12 @@ object NotificationGenerator {
                 "com.example.androiddeezer.player",
                 "Player",
                 "Player Android Deezer")
-         }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun createNotificationChannel(id: String, name: String,
-                                          description: String) {
+                                  description: String) {
 
         val importance = NotificationManager.IMPORTANCE_LOW
         val channel = NotificationChannel(id, name, importance)
@@ -81,6 +82,10 @@ object NotificationGenerator {
         nc.setContentIntent(pendingIntent)
         nc.setSmallIcon(R.drawable.ic_action_play)
         nc.setAutoCancel(true)
+            .setContentIntent(pPause)
+            .setContentIntent(pPlay)
+            .setContentIntent(pNext)
+            .setContentIntent(pPrevious)
 
         expandedView.setTextViewText(R.id.title_track_notif, titre)
         expandedView.setImageViewResource(R.id.album_art_notif, album_art)
@@ -118,6 +123,13 @@ object NotificationGenerator {
             .setContentIntent(pPrevious)
             .build()
 
+
+       /* expandedView.setBoolean(R.id.btn_play_notif, "setEnabled", false)
+        expandedView.setBoolean(R.id.btn_play_notif, "setEnabled", true)
+
+        expandedView.setBoolean(R.id.btn_play_notif, "setEnabled", false)
+        expandedView.setBoolean(R.id.btn_pause_notif, "setEnabled", true)*/
+
         setListeners(expandedView, context)
 
         notificationManager?.notify(notificationID, notification)
@@ -148,8 +160,6 @@ object NotificationGenerator {
 
         val pPlay = PendingIntent.getBroadcast(context, 0, play, PendingIntent.FLAG_UPDATE_CURRENT)
         view.setOnClickPendingIntent(R.id.btn_play_notif, pPlay)
-
-
     }
 
 }
