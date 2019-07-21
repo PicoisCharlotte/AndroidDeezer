@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Build
@@ -22,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_music.*
 class MainActivity : AppCompatActivity() {
     private var notificationManager: NotificationManager? = null
 
+    lateinit var notificationBroadcast: NotificationBroadcast
 
     private var mediaPlayer = MediaPlayer()
     public lateinit var currentTrack: Track
@@ -32,8 +34,6 @@ class MainActivity : AppCompatActivity() {
 
         val albumFragment = ListAlbumsFragment.newInstance()
         openFragment(albumFragment)
-
-        //btn_play.setOnClickListener {onPlay()}
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             notificationManager =
@@ -46,9 +46,21 @@ class MainActivity : AppCompatActivity() {
 
             NotificationGenerator.launchNotifManager(applicationContext)
 
+            notificationBroadcast = NotificationBroadcast()
+
+            registerReceiver(notificationBroadcast, IntentFilter("com.example.androiddeezer.play"))
+            registerReceiver(notificationBroadcast, IntentFilter("com.example.androiddeezer.pause"))
+            registerReceiver(notificationBroadcast, IntentFilter("com.example.androiddeezer.next"))
+            registerReceiver(notificationBroadcast, IntentFilter("com.example.androiddeezer.previous"))
         }
 
         setOnClicks()
+    }
+
+    companion object {
+        fun newInstance(): MainActivity {
+            return MainActivity()
+        }
     }
 
     private fun openFragment(fragment: ListAlbumsFragment) {

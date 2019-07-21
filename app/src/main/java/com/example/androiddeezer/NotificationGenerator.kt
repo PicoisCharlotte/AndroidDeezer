@@ -12,6 +12,7 @@ import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 import android.widget.RemoteViews
+import com.example.androiddeezer.services.MusicService
 
 object NotificationGenerator {
     val NOTIFY_PREVIOUS = "com.example.androiddeezer.previous"
@@ -19,6 +20,11 @@ object NotificationGenerator {
     val NOTIFY_PAUSE = "com.example.androiddeezer.pause"
     val NOTIFY_PLAY = "com.example.androiddeezer.play"
     val NOTIFY_NEXT = "com.example.androiddeezer.next"
+
+    val pPause: PendingIntent? = null
+    val pPlay: PendingIntent? = null
+    val pNext: PendingIntent? = null
+    val pPrevious: PendingIntent? = null
 
 
     private val NOTIFICATION_ID_CUSTOM_BIG = 9
@@ -106,6 +112,10 @@ object NotificationGenerator {
             .setCustomBigContentView(expandedView)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
+            .setContentIntent(pPause)
+            .setContentIntent(pPlay)
+            .setContentIntent(pNext)
+            .setContentIntent(pPrevious)
             .build()
 
         setListeners(expandedView, context)

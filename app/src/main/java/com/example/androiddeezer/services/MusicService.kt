@@ -1,14 +1,12 @@
 package com.example.androiddeezer.services
 
 import android.app.Service
-import android.content.Intent
-import android.os.IBinder
-import android.widget.Toast
-import android.R.attr.start
-import android.R
 import android.content.Context
+import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.IBinder
+import android.widget.Toast
 import com.example.androiddeezer.managers.MusicManager
 import com.example.androiddeezer.models.Track
 
