@@ -10,11 +10,7 @@ import android.graphics.Color
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
-import android.util.Log
-import android.view.View
-import android.widget.Button
 import android.widget.RemoteViews
-import com.example.androiddeezer.services.MusicService
 
 object NotificationGenerator {
     val NOTIFY_PREVIOUS = "com.example.androiddeezer.previous"
@@ -62,15 +58,15 @@ object NotificationGenerator {
         notificationManager?.createNotificationChannel(channel)
     }
 
-    fun launchNotif(context: Context, titre: String, album_art: Int){
+    fun launchNotif(context: Context, titre: String, artist: String, album_art: Int){
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            newNotif(notificationManager, context, titre,  album_art)
+            newNotif(notificationManager, context, titre, artist, album_art)
         } else
-            customBigNotification(context, titre,  R.drawable.ic_action_pause)
+            customBigNotification(context, titre, artist, album_art)
     }
 
-    fun customBigNotification(context: Context, titre: String, album_art: Int) {
+    fun customBigNotification(context: Context, titre: String, artist: String, album_art: Int) {
         val expandedView = RemoteViews(context.packageName, R.layout.big_notification)
 
         val nc = NotificationCompat.Builder(context)
@@ -87,7 +83,8 @@ object NotificationGenerator {
             .setContentIntent(pNext)
             .setContentIntent(pPrevious)
 
-        expandedView.setTextViewText(R.id.title_track_notif, titre)
+        expandedView.setTextViewText(R.id.title_album_notif, titre)
+        expandedView.setTextViewText(R.id.artist_notif, artist)
         expandedView.setImageViewResource(R.id.album_art_notif, album_art)
         nc.setCustomBigContentView(expandedView)
 
@@ -97,13 +94,14 @@ object NotificationGenerator {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun newNotif(notificationManager: NotificationManager?, context: Context, titre: String, album_art: Int){
+    fun newNotif(notificationManager: NotificationManager?, context: Context, titre: String, artist: String,  album_art: Int){
 
         val notificationID = 101
 
         val channelID = "com.example.androiddeezer.player"
         val expandedView = RemoteViews(context.packageName, R.layout.big_notification)
-        expandedView.setTextViewText(R.id.title_track_notif, titre)
+        expandedView.setTextViewText(R.id.title_album_notif, titre)
+        expandedView.setTextViewText(R.id.artist_notif, artist)
         expandedView.setImageViewResource(R.id.album_art_notif, album_art)
         val notifyIntent = Intent(context, MainActivity::class.java)
 
@@ -123,13 +121,6 @@ object NotificationGenerator {
             .setContentIntent(pPrevious)
             .build()
 
-
-       /* expandedView.setBoolean(R.id.btn_play_notif, "setEnabled", false)
-        expandedView.setBoolean(R.id.btn_play_notif, "setEnabled", true)
-
-        expandedView.setBoolean(R.id.btn_play_notif, "setEnabled", false)
-        expandedView.setBoolean(R.id.btn_pause_notif, "setEnabled", true)*/
-
         setListeners(expandedView, context)
 
         notificationManager?.notify(notificationID, notification)
@@ -137,18 +128,12 @@ object NotificationGenerator {
 
     private fun setListeners(view: RemoteViews, context: Context) {
         val previous = Intent(NOTIFY_PREVIOUS)
-        val delete = Intent(NOTIFY_DELETE)
         val pause = Intent(NOTIFY_PAUSE)
         val next = Intent(NOTIFY_NEXT)
         val play = Intent(NOTIFY_PLAY)
 
         val pPrevious = PendingIntent.getBroadcast(context, 0, previous, PendingIntent.FLAG_UPDATE_CURRENT)
         view.setOnClickPendingIntent(R.id.btn_previous_notif, pPrevious)
-
-
-        val pDelete = PendingIntent.getBroadcast(context, 0, delete, PendingIntent.FLAG_UPDATE_CURRENT)
-        view.setOnClickPendingIntent(R.id.btn_delete_notif, pDelete)
-
 
         val pPause = PendingIntent.getBroadcast(context, 0, pause, PendingIntent.FLAG_UPDATE_CURRENT)
         view.setOnClickPendingIntent(R.id.btn_pause_notif, pPause)

@@ -53,11 +53,5 @@ class AlbumAdapter(val context: Context, private val adapterCallbackAlbum: Adapt
 
         holder.itemView.setOnClickListener { adapterCallbackAlbum.onClickItem(album)}
     }
-
-    fun Context.toast(message: CharSequence) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
-
-
 }
 

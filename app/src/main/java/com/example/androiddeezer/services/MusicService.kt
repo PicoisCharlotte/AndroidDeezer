@@ -25,8 +25,6 @@ class MusicService : Service() {
     }
 
     override fun onCreate() {
-        Toast.makeText(this, "Service Successfully Created", Toast.LENGTH_LONG).show()
-
         mediaPlayer = MediaPlayer()
     }
 
@@ -39,7 +37,6 @@ class MusicService : Service() {
     }
 
     override fun onDestroy() {
-        Toast.makeText(this, "Service Stopped and Music Stopped", Toast.LENGTH_LONG).show()
         mediaPlayer?.stop()
     }
 
@@ -61,5 +58,9 @@ class MusicService : Service() {
             MusicManager.newInstance(context).setCurrentTrack(listTracks.get(position - 1))
             MusicManager.newInstance(context).setPosition(position - 1)
         }
+    }
+
+    fun getDuration() {
+        mediaPlayer?.duration
     }
 }

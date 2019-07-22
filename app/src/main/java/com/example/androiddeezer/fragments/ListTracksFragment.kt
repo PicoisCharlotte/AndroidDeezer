@@ -73,8 +73,6 @@ class ListTracksFragment : Fragment(), AdapterCallbackTrack{
         if(music_controller != null) {
             if (visible) {
                 music_controller.visibility = View.VISIBLE
-
-
             } else
                 music_controller.visibility = View.GONE
         }

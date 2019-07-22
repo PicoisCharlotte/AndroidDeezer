@@ -1,5 +1,6 @@
 package com.example.androiddeezer.fragments
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -70,15 +71,16 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
         }
     }
     fun getAlbums(url: String) {
-
         albumList.clear()
 
         val request = Request.Builder()
             .url(url)
             .build()
         client.newCall(request).enqueue(object: Callback {
+
             override fun onFailure(call: Call, e : IOException) {}
             override fun onResponse(call: Call, response: Response) {
+
                 val responseData = response.body?.string()
                 try {
                     val json = JSONObject(responseData)
