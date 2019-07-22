@@ -63,6 +63,10 @@ class ListTracksFragment : Fragment(), AdapterCallbackTrack{
 
         getTracks(url)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
         setMusicControllerVisibility(MusicManager.newInstance(requireContext()).isActive())
     }
 

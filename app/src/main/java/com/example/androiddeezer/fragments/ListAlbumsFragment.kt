@@ -50,6 +50,10 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
         list_album_view.adapter = albumAdapter
 
         getAlbums(url)
+    }
+
+    override fun onResume() {
+        super.onResume()
         setMusicControllerVisibility(MusicManager.newInstance(requireContext()).isActive())
     }
 

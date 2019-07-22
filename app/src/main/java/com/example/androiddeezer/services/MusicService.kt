@@ -35,9 +35,9 @@ public class MusicService : Service() {
     }
 
     override fun onStart(intent: Intent, startid: Int) {
-        var preview = intent.getStringExtra("preview")
+        val preview = intent.getStringExtra("preview")
         val previewUri: Uri = Uri.parse(preview)
-        mediaPlayer?.setDataSource(this@MusicService, previewUri)
+        mediaPlayer?.setDataSource(this, previewUri)
         mediaPlayer?.prepare()
         mediaPlayer?.start()
     }

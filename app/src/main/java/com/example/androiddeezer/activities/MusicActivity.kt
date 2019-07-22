@@ -23,6 +23,7 @@ import org.json.JSONObject
 import java.io.IOException
 import java.net.URL
 import android.content.Intent
+import android.widget.Button
 import com.bumptech.glide.GenericTransitionOptions
 import com.example.androiddeezer.managers.MusicManager
 import com.example.androiddeezer.services.MusicService
@@ -78,8 +79,6 @@ class MusicActivity : AppCompatActivity() {
                                 .load(album.getCoverMedium())
                                 .transition(GenericTransitionOptions.with(R.anim.fade_in))
                                 .into(image_album)
-
-                            title_track.text = track.getTitleTrack()
                         })
                     }
                 } catch (e: JSONException) {
@@ -90,6 +89,7 @@ class MusicActivity : AppCompatActivity() {
         })
 
     }
+
     fun setOnclicks(){
         if(MusicManager.newInstance(this@MusicActivity).getCurrentTrack() != null) {
             btn_back.setOnClickListener({
@@ -102,6 +102,8 @@ class MusicActivity : AppCompatActivity() {
                 startService(intent)
             })
             btn_play.setOnClickListener({
+
+                stopService(Intent(this, MusicService::class.java))
                 btn_pause.visibility = View.VISIBLE
                 btn_play.visibility = View.GONE
                 val intent = Intent(this@MusicActivity, MusicService::class.java)
