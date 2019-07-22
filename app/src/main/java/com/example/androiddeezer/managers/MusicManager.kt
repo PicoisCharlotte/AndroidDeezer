@@ -15,9 +15,7 @@ class MusicManager(context: Context) {
 
     val gson = Gson()
 
-    private var mediaPlayer = MediaPlayer()
-    private var context:Context = context
-    private var settings: SharedPreferences? = context.getSharedPreferences("DeezerApp", 0)
+    private var settings: SharedPreferences = context.getSharedPreferences("DeezerApp", 0)
 
     companion object {
         fun newInstance(contextInstance: Context): MusicManager {
@@ -25,40 +23,44 @@ class MusicManager(context: Context) {
         }
     }
 
-    public fun isActive(): Boolean{
-        return settings!!.getBoolean("isActive", false)
-    }
-    public fun setActive(isActive: Boolean){
-        settings?.edit()?.putBoolean("isActive", isActive)?.apply()
+    fun isActive(): Boolean{
+        return settings.getBoolean("isActive", false)
     }
 
-    public fun getCurrentTrack(): Track{
-        val jsonTrack = settings?.getString("track", "")
+    fun setActive(isActive: Boolean){
+        settings.edit()?.putBoolean("isActive", isActive)?.apply()
+    }
+
+    fun getCurrentTrack(): Track{
+        val jsonTrack = settings.getString("track", "")
         val track = gson.fromJson(jsonTrack, Track::class.java)
         return track
     }
-    public fun setCurrentTrack(track: Track){
+
+    fun setCurrentTrack(track: Track){
         val trackJson = gson.toJson(track)
-        settings?.edit()?.putString("track", trackJson)?.apply()
+        settings.edit()?.putString("track", trackJson)?.apply()
     }
 
-    public fun getCurrentTrackList(): List<Track>{
-        val jsonTrackList = settings?.getString("currentTrackList", "")
+    fun getCurrentTrackList(): List<Track>{
+        val jsonTrackList = settings.getString("currentTrackList", "")
         val trackType = object : TypeToken<List<Track>>() {}.type
         val trackList = Gson().fromJson<List<Track>>(jsonTrackList, trackType)
 
         return trackList
     }
-    public fun setCurrentTrackList(trackList: List<Track>){
+
+    fun setCurrentTrackList(trackList: List<Track>){
         val trackListJson = gson.toJson(trackList)
 
-        settings?.edit()?.putString("currentTrackList", trackListJson)?.apply()
+        settings.edit()?.putString("currentTrackList", trackListJson)?.apply()
     }
 
-    public fun getPosition(): Int{
-        return settings!!.getInt("position", 0)
+    fun getPosition(): Int{
+        return settings.getInt("position", 0)
     }
-    public fun setPosition(position: Int){
-        settings?.edit()?.putInt("position", position)?.apply()
+
+    fun setPosition(position: Int){
+        settings.edit()?.putInt("position", position)?.apply()
     }
 }

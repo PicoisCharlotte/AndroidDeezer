@@ -11,7 +11,7 @@ import com.example.androiddeezer.managers.MusicManager
 import com.example.androiddeezer.models.Track
 
 
-public class MusicService : Service() {
+class MusicService : Service() {
     var mediaPlayer: MediaPlayer? = null
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -28,14 +28,12 @@ public class MusicService : Service() {
         Toast.makeText(this, "Service Successfully Created", Toast.LENGTH_LONG).show()
 
         mediaPlayer = MediaPlayer()
-        //setting loop play to true
-        //this will make the ringtone continuously playing        myPlayer.setLooping(false); // Set looping
     }
 
     override fun onStart(intent: Intent, startid: Int) {
-        var preview = intent.getStringExtra("preview")
+        val preview = intent.getStringExtra("preview")
         val previewUri: Uri = Uri.parse(preview)
-        mediaPlayer?.setDataSource(this@MusicService, previewUri)
+        mediaPlayer?.setDataSource(this, previewUri)
         mediaPlayer?.prepare()
         mediaPlayer?.start()
     }
@@ -45,7 +43,7 @@ public class MusicService : Service() {
         mediaPlayer?.stop()
     }
 
-    public fun nextMusic(position: Int, listTracks: List<Track>, context: Context){
+    fun nextMusic(position: Int, listTracks: List<Track>, context: Context){
         if(position + 1 < listTracks.size) {
             MusicManager.newInstance(context).setCurrentTrack(listTracks.get(position + 1))
             MusicManager.newInstance(context).setPosition(position + 1)
@@ -55,7 +53,7 @@ public class MusicService : Service() {
         }
     }
 
-    public fun previousMusic(position: Int, listTracks: List<Track>, context: Context){
+    fun previousMusic(position: Int, listTracks: List<Track>, context: Context){
         if(position == 0){
             MusicManager.newInstance(context).setCurrentTrack(listTracks.get(listTracks.size - 1))
             MusicManager.newInstance(context).setPosition(listTracks.size - 1)
@@ -64,6 +62,4 @@ public class MusicService : Service() {
             MusicManager.newInstance(context).setPosition(position - 1)
         }
     }
-
-
 }

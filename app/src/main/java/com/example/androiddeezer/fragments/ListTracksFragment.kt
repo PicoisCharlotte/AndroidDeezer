@@ -42,7 +42,6 @@ class ListTracksFragment : Fragment(), AdapterCallbackTrack{
     private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         trackAdapter = TrackAdapter(context!!, this)
         linearLayoutManager = LinearLayoutManager(context)
 
@@ -62,6 +61,10 @@ class ListTracksFragment : Fragment(), AdapterCallbackTrack{
         createGradientFromAlbumCover()
 
         getTracks(url)
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         setMusicControllerVisibility(MusicManager.newInstance(requireContext()).isActive())
     }
@@ -156,10 +159,9 @@ class ListTracksFragment : Fragment(), AdapterCallbackTrack{
 
     override fun onClickItem(track: Track, trackList: List<Track>, position: Int) {
         context?.let { MusicManager.newInstance(it).setCurrentTrack(track) }
-        val arrayListTrack = ArrayList<Track>(trackList)
         MusicManager.newInstance(requireContext()).setPosition(position)
         MusicManager.newInstance(requireContext()).setCurrentTrackList(trackList)
-        var intent = Intent(context, MusicActivity::class.java)
+        val intent = Intent(context, MusicActivity::class.java)
         startActivity(intent)
     }
 }

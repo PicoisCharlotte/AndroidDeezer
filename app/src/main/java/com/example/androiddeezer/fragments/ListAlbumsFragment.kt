@@ -36,7 +36,6 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
     private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         albumAdapter = AlbumAdapter(context!!, this)
         linearLayoutManager = LinearLayoutManager(context)
 
@@ -46,10 +45,14 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        list_album_view.layoutManager = GridLayoutManager(context, 1) as RecyclerView.LayoutManager?
+        list_album_view.layoutManager = GridLayoutManager(context, 1)
         list_album_view.adapter = albumAdapter
 
         getAlbums(url)
+    }
+
+    override fun onResume() {
+        super.onResume()
         setMusicControllerVisibility(MusicManager.newInstance(requireContext()).isActive())
     }
 
@@ -94,11 +97,9 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
                         albumAdapter.setData(albumList)
                         albumAdapter.notifyDataSetChanged()
                     }
-
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
-
             }
         })
     }
@@ -111,7 +112,6 @@ class ListAlbumsFragment : Fragment(), AdapterCallbackAlbum {
             val transaction = fragmentManager?.beginTransaction()
 
             transaction?.replace(R.id.content, fragment)
-            //transaction.remove(this)
             transaction?.addToBackStack(null)
             transaction?.commit()
         }
